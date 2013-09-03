@@ -10,6 +10,23 @@
 	<name>Spring Data MongoDB - Metamodel processor parent project</name>
 	<description>Parent project of Spring Data meta model processor for MongoDB documents</description>
 
+	<distributionManagement>
+		<repository>
+			<id>mendlik-releases</id>
+			<url>https://github.com/mendlik/mvn-repo/raw/master/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>mendlik-snapshots</id>
+			<url>https://github.com/mendlik/mvn-repo/raw/master/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<scm>
+		<connection>scm:git:git@github.com:mendlik/spring-data-mongodb-processor.git</connection>
+		<developerConnection>scm:git:git@github.com:mendlik/spring-data-mongodb-processor.git</developerConnection>
+		<url>http://github.com/mendlik/spring-data-mongodb-processor</url>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
