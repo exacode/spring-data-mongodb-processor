@@ -81,7 +81,7 @@
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
 				<version>2.2.4</version>
-				<executions>
+				<executions> 
 					<execution>
 						<id>process</id>
 						<goals>

@@ -46,3 +46,14 @@ Using this annotation processor you can create string-free queries like:
 		Criteria.where(User_.settings.index(5));
 		// Instead of: Criteria.where("user.settings.5");
 
+Maven repository
+----------------
+
+In order to use this library in your project add [repository](http://github.com/mendlik/mvn-repo) location in your `pom.xml`:
+
+		<repositories>
+		    <repository>
+		        <id>mendlik-releases</id>
+		        <url>https://github.com/mendlik/mvn-repo/raw/master/releases</url>
+		    </repository>
+		</repositories>
