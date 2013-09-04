@@ -49,7 +49,7 @@ Using this annotation processor you can create string-free queries like:
 Maven repository
 ----------------
 
-In order to use this library in your project add [repository](http://github.com/mendlik/mvn-repo) location in your `pom.xml`:
+In order to use this library add [repository](http://github.com/mendlik/mvn-repo) location in your `pom.xml`:
 
 		<repositories>
 		    <repository>
