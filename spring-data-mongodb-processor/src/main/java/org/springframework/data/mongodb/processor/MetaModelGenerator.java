@@ -1,8 +1,6 @@
 package org.springframework.data.mongodb.processor;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -16,6 +14,9 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.processor.model.MetaModel;
+import org.springframework.data.mongodb.processor.model.MetaModelField;
+import org.springframework.data.mongodb.processor.model.Type;
 
 /**
  * Crawls through field definitions of given model type.
@@ -38,73 +39,62 @@ class MetaModelGenerator {
 	}
 
 	/**
-	 * Crawls through type (and super type) field definitions and generates
-	 * context for writing meta model.
+	 * Crawls through type (and super type) field definitions and generates meta
+	 * model related data.
 	 * 
 	 * @param pw
 	 * @param type
 	 * @param outputFileName
 	 * @throws IOException
 	 */
-	public Map<String, Object> analyzeType(TypeElement type) {
-		Map<String, Object> context = new HashMap<String, Object>();
-
+	public MetaModel analyzeType(TypeElement type) {
 		String outputFileName = processingEnv.getElementUtils()
 				.getBinaryName(type).toString();
-		outputFileName = outputFileName.replaceAll("\\$", "_");
-		context.put("fileName", outputFileName + "_");
+		outputFileName = outputFileName.replaceAll("\\$", "_").concat("_");
+		MetaModel metaModel = new MetaModel(outputFileName);
 
-		int lastDot = outputFileName.lastIndexOf('.');
-		String typeName = outputFileName.substring(lastDot + 1);
-		context.put("modelTypeName", typeName);
-		if (lastDot > 0) {
-			context.put("package", outputFileName.substring(0, lastDot));
-		}
+		analyzeSuperclassFields(type.getSuperclass(), metaModel);
+		analyzeFields(type, metaModel);
 
-		Fields fields = new Fields();
-		analyzeSuperclassFields(type.getSuperclass(), fields);
-		analyzeFields(type, fields);
-
-		context.put("fields", fields);
-		return context;
+		return metaModel;
 	}
 
-	private void analyzeFields(TypeElement typeElement, Fields fields) {
+	private void analyzeFields(TypeElement typeElement, MetaModel metaModel) {
 		for (VariableElement field : ElementFilter.fieldsIn(typeElement
 				.getEnclosedElements())) {
-			analyzeField(field, fields);
+			analyzeField(field, metaModel);
 		}
 	}
 
 	private void analyzeSuperclassFields(TypeMirror superclassTypeMirror,
-			Fields fields) {
+			MetaModel metaModel) {
 		while (superclassTypeMirror instanceof DeclaredType) {
 			TypeElement declaredSuperclass = (TypeElement) ((DeclaredType) superclassTypeMirror)
 					.asElement();
 			for (VariableElement field : ElementFilter
 					.fieldsIn(declaredSuperclass.getEnclosedElements())) {
-				analyzeField(field, fields);
+				analyzeField(field, metaModel);
 			}
 			superclassTypeMirror = declaredSuperclass.getSuperclass();
 		}
 	}
 
-	private void analyzeField(VariableElement field, Fields fields) {
+	private void analyzeField(VariableElement field, MetaModel metaModel) {
 		if (field.getModifiers().contains(Modifier.STATIC)
 				|| field.getModifiers().contains(Modifier.TRANSIENT)) {
 			return;
 		}
-		Field fieldModel = new Field(field.getSimpleName().toString());
+		MetaModelField fieldModel = new MetaModelField(field.getSimpleName()
+				.toString());
 		TypeMirror typeMirror = field.asType();
 		if (modelUtils.isCollection(typeMirror)) {
 			TypeMirror collectionTypeArgument = modelUtils
 					.getCollectionTypeArgument(typeMirror);
 			if (isDocument(typeMirror)) {
-				createReferenceFieldDefinition(fieldModel,
-						modelUtils.toTypeElement(collectionTypeArgument));
-				fields.addReferenceArrayField(fieldModel);
+				fieldModel.setType(getReferenceType(collectionTypeArgument));
+				metaModel.addReferenceArrayField(fieldModel);
 			} else {
-				fields.addPrimitiveArrayField(fieldModel);
+				metaModel.addPrimitiveArrayField(fieldModel);
 			}
 		} else if (typeMirror.getKind() == TypeKind.ARRAY) {
 			TypeMirror componentTypeMirror = typeMirror;
@@ -113,19 +103,17 @@ class MetaModelGenerator {
 				componentTypeMirror = arrayType.getComponentType();
 			}
 			if (isDocument(typeMirror)) {
-				createReferenceFieldDefinition(fieldModel,
-						modelUtils.toTypeElement(componentTypeMirror));
-				fields.addReferenceArrayField(fieldModel);
+				fieldModel.setType(getReferenceType(componentTypeMirror));
+				metaModel.addReferenceArrayField(fieldModel);
 			} else {
-				fields.addPrimitiveArrayField(fieldModel);
+				metaModel.addPrimitiveArrayField(fieldModel);
 			}
 		} else if (isDocument(typeMirror)) {
-			createReferenceFieldDefinition(fieldModel,
-					modelUtils.toTypeElement(typeMirror));
+			fieldModel.setType(getReferenceType(typeMirror));
 			fieldModel.setIdField(field.getAnnotation(Id.class) != null);
-			fields.addReferenceField(fieldModel);
+			metaModel.addReferenceField(fieldModel);
 		} else {
-			fields.addPrimitiveField(fieldModel);
+			metaModel.addPrimitiveField(fieldModel);
 		}
 	}
 
@@ -134,16 +122,12 @@ class MetaModelGenerator {
 				&& modelTypes.contains(modelUtils.toTypeElement(typeMirror));
 	}
 
-	private Field createReferenceFieldDefinition(Field fieldModel,
-			TypeElement type) {
+	private Type getReferenceType(TypeMirror typeMirror) {
+		TypeElement typeElement = modelUtils.toTypeElement(typeMirror);
 		String canonicalName = processingEnv.getElementUtils()
-				.getBinaryName(type).toString().replaceAll("\\$", "_");
-		int lastDot = canonicalName.lastIndexOf('.');
-		String typeName = canonicalName.substring(lastDot + 1);
-		String pkg = canonicalName.substring(0, lastDot);
-		fieldModel.setPackage(pkg);
-		fieldModel.setTypeName(typeName);
-		return fieldModel;
+				.getBinaryName(typeElement).toString().replaceAll("\\$", "_")
+				.concat("_");
+		return Type.createFromCanonicalName(canonicalName);
 	}
 
 }

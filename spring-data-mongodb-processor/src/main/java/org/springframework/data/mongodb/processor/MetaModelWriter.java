@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
+
+import org.springframework.data.mongodb.processor.model.MetaModel;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -44,9 +47,11 @@ public class MetaModelWriter {
 				"/");
 	}
 
-	public void write(Map<String, Object> context) {
-		writeTemplate(context, META_MODEL_TEMPLATE, context.get("fileName")
-				.toString());
+	public void write(MetaModel metaModel) {
+		Map<String, Object> context = new HashMap<String, Object>();
+		context.put("metaModel", metaModel);
+		writeTemplate(context, META_MODEL_TEMPLATE, metaModel.getType()
+				.getCanonicalName());
 	}
 
 	public void writeUtilClasses() {

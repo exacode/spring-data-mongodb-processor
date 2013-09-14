@@ -1,9 +1,9 @@
 package org.springframework.data.mongodb.processor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
@@ -26,7 +26,7 @@ public class ModelUtils {
 	private final TypeElement collectionType;
 	private final TypeElement objectType;
 	private final WildcardType nullWildcardType;
-	private final List<TypeElement> nonDocumentTypes = new ArrayList<TypeElement>();
+	private final Set<TypeElement> nonDocumentTypes = new HashSet<TypeElement>();
 	private final Map<String, DeclaredType> cachedParentTypes = new HashMap<String, DeclaredType>();
 
 	public ModelUtils(ProcessingEnvironment processingEnv) {

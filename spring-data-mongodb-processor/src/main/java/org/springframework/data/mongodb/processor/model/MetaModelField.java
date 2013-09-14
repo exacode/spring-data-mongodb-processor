@@ -1,4 +1,4 @@
-package org.springframework.data.mongodb.processor;
+package org.springframework.data.mongodb.processor.model;
 
 /**
  * Simple document's field representation.
@@ -8,28 +8,19 @@ package org.springframework.data.mongodb.processor;
  * @author mendlik
  * 
  */
-public class Field {
+public class MetaModelField {
 
 	private String fieldName;
-	private String typeName;
-	private String pkg;
 	private boolean idField;
+	private Type type;
 
-	public Field(String fieldName) {
+	public MetaModelField(String fieldName) {
 		super();
 		this.fieldName = fieldName;
 	}
 
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
-	}
-
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
-
-	public void setPackage(String pkg) {
-		this.pkg = pkg;
 	}
 
 	public String getFieldName() {
@@ -40,12 +31,12 @@ public class Field {
 		return idField ? "_id" : fieldName;
 	}
 
-	public String getTypeName() {
-		return typeName;
+	public Type getType() {
+		return type;
 	}
 
-	public String getPackage() {
-		return pkg;
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	public boolean isIdField() {

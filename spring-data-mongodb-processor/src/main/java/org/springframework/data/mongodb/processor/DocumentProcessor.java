@@ -1,7 +1,6 @@
 package org.springframework.data.mongodb.processor;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -11,6 +10,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.processor.model.MetaModel;
 
 /**
  * Processor used to generate meta models for MongoDB documents.
@@ -48,8 +48,8 @@ public class DocumentProcessor extends AbstractProcessor {
 		MetaModelGenerator generator = new MetaModelGenerator(processingEnv,
 				modelTypes);
 		for (TypeElement typeElement : modelTypes) {
-			Map<String, Object> context = generator.analyzeType(typeElement);
-			writer.write(context);
+			MetaModel metaModel = generator.analyzeType(typeElement);
+			writer.write(metaModel);
 		}
 		if (!modelTypes.isEmpty()) {
 			writer.writeUtilClasses();

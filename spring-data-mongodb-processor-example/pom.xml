@@ -36,18 +36,21 @@
 			<version>${version.fest-assert-core}</version>
 			<scope>test</scope>
 		</dependency>
+
 		<!-- Logging dependencies -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>${version.logback}</version>
 		</dependency>
+
 		<!-- Processor dependency -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>${version.spring-data-mongodb}</version>
 		</dependency>
+
 		<!-- Joda time -->
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -97,7 +100,7 @@
 				</executions>
 				<dependencies>
 					<dependency>
-						<groupId>org.springframework.data</groupId>
+						<groupId>${project.groupId}</groupId>
 						<artifactId>spring-data-mongodb-processor</artifactId>
 						<version>${project.version}</version>
 					</dependency>

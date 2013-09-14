@@ -24,12 +24,14 @@
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>${version.spring-data-mongodb}</version>
 		</dependency>
+		
 		<!-- Template engine -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>${version.freemarker}</version>
 		</dependency>
+
 		<!-- Log4j is required by freemarker (see: freemarker.log.Log4JLoggerFactory) -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
