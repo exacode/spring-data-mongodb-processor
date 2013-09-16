@@ -3,11 +3,25 @@ Annotation processor for models annotated with `@Document`
 
 An annotation processor for [spring-data-mongodb](http://www.springsource.org/spring-data/mongodb) document classes. 
 
+
 What it does?
 -------------
 
 - generates meta model for all classes annotated with `@Document`
 - enables creation of stringless queries
+
+
+How to configure?
+-----------------
+
+### Maven
+First invoke *spring-data-annotation-processor* during maven build. In order to do this have a look at an example project: [spring-data-mongodb-processor-example](https://github.com/mendlik/spring-data-mongodb-processor/blob/master/spring-data-mongodb-processor-example/pom.xml#L62).
+
+### Eclipse IDE
+To ease the usage of annotation processor use Eclipse IDE with m2e eclipse plugin and configure it to invoke annotation processor automatically:
+* Right-click on your project > Properties > Maven > Annotation processing
+* Select the Annotation Processing strategy: *Delegate Annotation Processing to maven plugins*. 
+
 
 Usage example
 -------------
@@ -25,6 +39,7 @@ Using this annotation processor and [spring-data-mongodb](http://www.springsourc
 		// Arrays:	
 		Criteria.where(User_.settings.index(5));
 		// Instead of: Criteria.where("user.settings.5");
+
 
 Maven repository
 ----------------
@@ -46,6 +61,7 @@ In order to use this library add [repository](http://github.com/mendlik/mvn-repo
 		    </dependency>
 		</dependencies>
 
+
 Projects
 --------
 This project is separated into projects:
@@ -58,6 +74,7 @@ This project is separated into projects:
 - `spring-data-mongodb-processor-example` - Contains test cases and an usage example of spring-data-mongodb-processor.
 - `spring-data-mongodb-processor` - Contains source of annotation processor.
 
+
 Why QueryDSL for MongoDB is not sufficient? 
 -------------------------------------------
 - QueryDSL can be used only in queries. What about updating and deleting data?
@@ -68,6 +85,8 @@ Why QueryDSL for MongoDB is not sufficient?
 
 Maybe some of these arguments come from my lack of knowledge. Maybe I didn't study the documentation as hard as I should. If I am wrong please correct me.
 
+
 Spring feature
 --------------
-This annotation processor is proposed as feature on [Springsource Jira](https://jira.springsource.org/browse/DATAMONGO-744).
+This annotation processor is proposed as feature on [Springsource Jira](https://jira.springsource.org/browse/DATAMONGO-744). 
+Please vote it up!
