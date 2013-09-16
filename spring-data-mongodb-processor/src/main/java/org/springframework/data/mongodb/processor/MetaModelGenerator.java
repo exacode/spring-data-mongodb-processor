@@ -84,36 +84,55 @@ class MetaModelGenerator {
 				|| field.getModifiers().contains(Modifier.TRANSIENT)) {
 			return;
 		}
-		MetaModelField fieldModel = new MetaModelField(field.getSimpleName()
-				.toString());
+		String fieldName = field.getSimpleName().toString();
 		TypeMirror typeMirror = field.asType();
 		if (modelUtils.isCollection(typeMirror)) {
-			TypeMirror collectionTypeArgument = modelUtils
-					.getCollectionTypeArgument(typeMirror);
-			if (isDocument(typeMirror)) {
-				fieldModel.setType(getReferenceType(collectionTypeArgument));
-				metaModel.addReferenceArrayField(fieldModel);
-			} else {
-				metaModel.addPrimitiveArrayField(fieldModel);
-			}
+			analyzeCollectionField(metaModel, fieldName, typeMirror);
 		} else if (typeMirror.getKind() == TypeKind.ARRAY) {
-			TypeMirror componentTypeMirror = typeMirror;
-			while (componentTypeMirror.getKind() == TypeKind.ARRAY) {
-				ArrayType arrayType = (ArrayType) componentTypeMirror;
-				componentTypeMirror = arrayType.getComponentType();
-			}
-			if (isDocument(typeMirror)) {
-				fieldModel.setType(getReferenceType(componentTypeMirror));
-				metaModel.addReferenceArrayField(fieldModel);
-			} else {
-				metaModel.addPrimitiveArrayField(fieldModel);
-			}
+			analyzeArrayField(metaModel, fieldName, typeMirror);
 		} else if (isDocument(typeMirror)) {
-			fieldModel.setType(getReferenceType(typeMirror));
-			fieldModel.setIdField(field.getAnnotation(Id.class) != null);
-			metaModel.addReferenceField(fieldModel);
+			analyzeDocumentField(field, metaModel, fieldName, typeMirror);
 		} else {
-			metaModel.addPrimitiveField(fieldModel);
+			boolean idField = field.getAnnotation(Id.class) != null;
+			metaModel.addPrimitiveField(new MetaModelField(fieldName, null,
+					idField));
+		}
+	}
+
+	private void analyzeDocumentField(VariableElement field,
+			MetaModel metaModel, String fieldName, TypeMirror typeMirror) {
+		Type type = getReferenceType(typeMirror);
+		boolean idField = field.getAnnotation(Id.class) != null;
+		metaModel.addReferenceField(new MetaModelField(fieldName, type,
+				idField));
+	}
+
+	private void analyzeArrayField(MetaModel metaModel, String fieldName,
+			TypeMirror typeMirror) {
+		TypeMirror componentTypeMirror = typeMirror;
+		while (componentTypeMirror.getKind() == TypeKind.ARRAY) {
+			ArrayType arrayType = (ArrayType) componentTypeMirror;
+			componentTypeMirror = arrayType.getComponentType();
+		}
+		if (isDocument(typeMirror)) {
+			Type type = getReferenceType(componentTypeMirror);
+			metaModel.addReferenceArrayField(new MetaModelField(fieldName,
+					type));
+		} else {
+			metaModel.addPrimitiveArrayField(new MetaModelField(fieldName));
+		}
+	}
+
+	private void analyzeCollectionField(MetaModel metaModel, String fieldName,
+			TypeMirror typeMirror) {
+		TypeMirror collectionTypeArgument = modelUtils
+				.getCollectionTypeArgument(typeMirror);
+		if (isDocument(typeMirror)) {
+			Type type = getReferenceType(collectionTypeArgument);
+			metaModel.addReferenceArrayField(new MetaModelField(fieldName,
+					type));
+		} else {
+			metaModel.addPrimitiveArrayField(new MetaModelField(fieldName));
 		}
 	}
 

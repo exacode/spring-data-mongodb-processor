@@ -13,7 +13,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
 /**
- * Determines which types needs a dedicated meta model.
+ * Determines which types need a dedicated meta model.
  * 
  * @author mendlik
  */

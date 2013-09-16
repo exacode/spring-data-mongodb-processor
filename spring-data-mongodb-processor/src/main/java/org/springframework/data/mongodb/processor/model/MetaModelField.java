@@ -10,17 +10,22 @@ package org.springframework.data.mongodb.processor.model;
  */
 public class MetaModelField {
 
-	private String fieldName;
-	private boolean idField;
-	private Type type;
+	private final String fieldName;
+	private final boolean idField;
+	private final Type type;
 
 	public MetaModelField(String fieldName) {
-		super();
-		this.fieldName = fieldName;
+		this(fieldName, null, false);
 	}
 
-	public void setFieldName(String fieldName) {
+	public MetaModelField(String fieldName, Type type) {
+		this(fieldName, type, false);
+	}
+
+	public MetaModelField(String fieldName, Type type, boolean idField) {
 		this.fieldName = fieldName;
+		this.type = type;
+		this.idField = idField;
 	}
 
 	public String getFieldName() {
@@ -35,16 +40,8 @@ public class MetaModelField {
 		return type;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
-	}
-
 	public boolean isIdField() {
 		return idField;
-	}
-
-	public void setIdField(boolean idField) {
-		this.idField = idField;
 	}
 
 }
