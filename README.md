@@ -40,9 +40,9 @@ In order to use this library add [repository](http://github.com/mendlik/mvn-repo
 
 		<dependencies>
 		    <dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-mongodb-processor</artifactId>
-			<version>${spring-data-mongodb-processor.version}</version>
+		        <groupId>org.springframework.data</groupId>
+		        <artifactId>spring-data-mongodb-processor</artifactId>
+		        <version>${spring-data-mongodb-processor.version}</version>
 		    </dependency>
 		</dependencies>
 
@@ -55,7 +55,7 @@ This project is separated into projects:
 		   |- spring-data-mongodb-processor
 
 - `spring-data-mongodb-processor-parent` - Just groups subprojects.
-- `spring-data-mongodb-processor-example` - Contains test cases and a usage example of spring-data-mongodb-processor.
+- `spring-data-mongodb-processor-example` - Contains test cases and an usage example of spring-data-mongodb-processor.
 - `spring-data-mongodb-processor` - Contains source of annotation processor.
 
 Why QueryDSL for MongoDB is not sufficient? 
