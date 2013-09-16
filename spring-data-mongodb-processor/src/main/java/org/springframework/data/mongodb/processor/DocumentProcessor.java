@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.processor.model.MetaModel;
 
 /**
- * Processor used to generate meta models for MongoDB documents.
+ * Processor that generates meta model for MongoDB documents.
  * <p>
  * Uses {@link Document} annotation to determine the root of the MongoDB
  * document.

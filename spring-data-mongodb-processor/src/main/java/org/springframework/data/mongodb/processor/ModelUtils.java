@@ -124,16 +124,16 @@ public class ModelUtils {
 				|| !isA(type, collectionType)) {
 			return null;
 		}
-		TypeElement typeElemnet = (TypeElement) type;
-		while (typeElemnet != null && !objectType.equals(typeElemnet)) {
-			for (TypeMirror typeInterface : typeElemnet.getInterfaces()) {
+		TypeElement typeElement = (TypeElement) type;
+		while (typeElement != null && !objectType.equals(typeElement)) {
+			for (TypeMirror typeInterface : typeElement.getInterfaces()) {
 				TypeElement typeInterfaceElement = toTypeElement(typeInterface);
 				if (collectionType.equals(typeInterfaceElement)) {
 					return toDeclaredType(typeInterface).getTypeArguments()
 							.get(0);
 				}
 			}
-			typeElemnet = toTypeElement(typeElemnet.getSuperclass());
+			typeElement = toTypeElement(typeElement.getSuperclass());
 		}
 		return null;
 	}

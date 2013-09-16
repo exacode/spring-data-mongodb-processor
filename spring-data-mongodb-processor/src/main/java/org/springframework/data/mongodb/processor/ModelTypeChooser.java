@@ -13,7 +13,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
 /**
- * Finds all types that needs meta model.
+ * Determines which types needs a dedicated meta model.
  * 
  * @author mendlik
  */
@@ -29,11 +29,12 @@ public class ModelTypeChooser {
 	}
 
 	/**
-	 * Finds all types that require meta model generation. Those types are
-	 * determined from fields (single, array and collections) and nested types
-	 * of passed {@code typeMirror}.
-	 * <p/>
-	 * Result is past by parameter.
+	 * Finds all types that require meta model generation.
+	 * <p>
+	 * Those types are determined from document's fields (like: references,
+	 * arrays and collections) and nested types.
+	 * <p>
+	 * Result is past by {@code models} parameter.
 	 * 
 	 * @param typeMirror
 	 *            - root level document type
@@ -41,11 +42,8 @@ public class ModelTypeChooser {
 	 *            - unique set of types that requires meta model generation
 	 */
 	public void getDocumentTypes(TypeMirror typeMirror, Set<TypeElement> models) {
-		if (typeMirror == null || typeMirror.getKind() != TypeKind.DECLARED) {
-			return;
-		}
 		TypeElement typeElement = modelUtils.toTypeElement(typeMirror);
-		if (models.contains(typeElement)) {
+		if (typeElement == null || models.contains(typeElement)) {
 			return;
 		}
 		// Create meta model for analyzed type
