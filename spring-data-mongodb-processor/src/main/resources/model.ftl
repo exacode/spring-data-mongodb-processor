@@ -15,7 +15,9 @@ import ${field.type.packageName}.${field.type.className};
 <#if metaModel.primitiveArrayFields?size gt 0>
 import org.springframework.data.mongodb.processor.shared.ArrayField;
 </#if>
+<#if (metaModel.referenceFields?has_content || metaModel.referenceArrayFields?has_content)>
 import org.springframework.data.mongodb.processor.shared.DocumentProcessorConfiguration;
+</#if>
 
 public class ${metaModel.type.className} {
  
@@ -62,6 +64,7 @@ public class ${metaModel.type.className} {
 		public ${metaModel.type.className}Field(String path, int depth) {
 			this._path = path;
 			this._class = path + "._class";
+			<#if (metaModel.referenceFields?has_content || metaModel.referenceArrayFields?has_content)>
 			if(depth < DocumentProcessorConfiguration.MAX_DEPTH) {
 				<#list metaModel.referenceFields as field>
 				this.${field.fieldName} = new ${fieldType(field.type)}(path + ".${field.fieldPathName}", depth + 1);
@@ -77,6 +80,7 @@ public class ${metaModel.type.className} {
 				this.${field.fieldName} = null;
 				</#list>		
 			}
+			</#if>	
 			<#list metaModel.primitiveFields as field>
 			this.${field.fieldName} = path + ".${field.fieldPathName}";
 			</#list>

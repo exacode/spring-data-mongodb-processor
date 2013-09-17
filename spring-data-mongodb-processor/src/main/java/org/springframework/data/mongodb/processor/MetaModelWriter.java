@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.tools.Diagnostic.Kind;
 
 import org.springframework.data.mongodb.processor.model.MetaModel;
 
@@ -26,8 +27,6 @@ import freemarker.template.TemplateException;
  */
 public class MetaModelWriter {
 
-	private final Logger logger;
-
 	private final ProcessingEnvironment processingEnv;
 
 	private final Configuration templateConfiguration;
@@ -36,7 +35,6 @@ public class MetaModelWriter {
 
 	public MetaModelWriter(ProcessingEnvironment processingEnv) {
 		this.processingEnv = processingEnv;
-		this.logger = new Logger(processingEnv);
 		this.templateConfiguration = new Configuration();
 		this.templateConfiguration.setClassForTemplateLoading(this.getClass(),
 				"/");
@@ -64,8 +62,10 @@ public class MetaModelWriter {
 			pw.close();
 			os.close();
 		} catch (IOException | TemplateException e) {
-			logger.error("Could not create source file for " + outputFileName
-					+ ": " + e);
+			processingEnv.getMessager().printMessage(
+					Kind.ERROR,
+					"Could not create source file for " + outputFileName + ": "
+							+ e);
 		}
 	}
 }

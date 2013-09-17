@@ -31,9 +31,6 @@ public class DocumentProcessor extends AbstractProcessor {
 			return false;
 		}
 
-		Logger logger = new Logger(processingEnv);
-		logger.note("Running: " + this.getClass().getCanonicalName());
-
 		// Find unique types that needs meta model
 		ModelTypeChooser typeChooser = new ModelTypeChooser(processingEnv);
 		Set<TypeElement> modelTypes = new HashSet<TypeElement>();

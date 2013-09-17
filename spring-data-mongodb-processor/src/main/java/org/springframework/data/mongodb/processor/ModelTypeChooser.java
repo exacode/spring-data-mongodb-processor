@@ -10,11 +10,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
-import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.ElementFilter;
-
-import org.slf4j.LoggerFactory;
 
 /**
  * Determines which types need a dedicated meta model.
@@ -24,8 +20,6 @@ import org.slf4j.LoggerFactory;
 public class ModelTypeChooser {
 
 	private final AptUtils aptUtils;
-
-	private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
 	public ModelTypeChooser(ProcessingEnvironment processingEnv) {
 		this.aptUtils = new AptUtils(processingEnv);
@@ -45,49 +39,36 @@ public class ModelTypeChooser {
 	 *            - unique set of types that requires meta model generation
 	 */
 	public void getDocumentTypes(TypeMirror typeMirror, Set<TypeElement> models) {
-		if (typeMirror == null) {
+		TypeElement typeElement = aptUtils.toTypeElement(aptUtils
+				.getUpperBound(typeMirror));
+		if (typeElement == null || models.contains(typeElement)) {
 			return;
 		}
-		if (TypeKind.TYPEVAR.equals(typeMirror.getKind())) {
-			TypeVariable typeVariable = (TypeVariable) typeMirror;
-			getDocumentTypes(typeVariable.getLowerBound(), models);
-		} else if (TypeKind.WILDCARD.equals(typeMirror.getKind())) {
-			WildcardType wildcardVariable = (WildcardType) typeMirror;
-			getDocumentTypes(wildcardVariable.getExtendsBound(), models);
-		} else {
-			TypeElement typeElement = aptUtils.toTypeElement(typeMirror);
-			if (typeElement == null || models.contains(typeElement)) {
-				return;
-			}
-			// Create meta model for analyzed type
-			if (aptUtils.isDocument(typeElement.asType())) {
-				logger.info("Found document: " + typeElement);
-				models.add(typeElement);
-				// Create Meta model for types of fields
-				for (VariableElement field : ElementFilter.fieldsIn(typeElement
-						.getEnclosedElements())) {
-					if (isPersistableField(field)) {
-						getDocumentTypes(field.asType(), models);
-					}
+		// Create meta model for analyzed type
+		if (aptUtils.isDocument(typeElement.asType())) {
+			models.add(typeElement);
+			// Create Meta model for types of fields
+			for (VariableElement field : ElementFilter.fieldsIn(typeElement
+					.getEnclosedElements())) {
+				if (isPersistableField(field)) {
+					getDocumentTypes(field.asType(), models);
 				}
-				// Create meta model for nested classes
-				for (Element enclosedTypeElement : ElementFilter
-						.typesIn(typeElement.getEnclosedElements())) {
-					// Recurrence added for nested classes
-					logger.info("Check nested class: "
-							+ enclosedTypeElement.asType());
-					getDocumentTypes(enclosedTypeElement.asType(), models);
-				}
-			} else if (aptUtils.isCollection(typeMirror)) {
-				// Create meta model for types used in generic collection
-				// definitions
-				getDocumentTypes(
-						aptUtils.getCollectionTypeArgument(typeMirror), models);
-			} else if (typeMirror.getKind() == TypeKind.ARRAY) {
-				// Create meta model for types used in arrays
-				ArrayType arrayType = (ArrayType) typeMirror;
-				getDocumentTypes(arrayType.getComponentType(), models);
 			}
+			// Create meta model for nested classes
+			for (Element enclosedTypeElement : ElementFilter
+					.typesIn(typeElement.getEnclosedElements())) {
+				// Recurrence added for nested classes
+				getDocumentTypes(enclosedTypeElement.asType(), models);
+			}
+		} else if (aptUtils.isCollection(typeMirror)) {
+			// Create meta model for types used in generic collection
+			// definitions
+			getDocumentTypes(aptUtils.getCollectionTypeArgument(typeMirror),
+					models);
+		} else if (typeMirror.getKind() == TypeKind.ARRAY) {
+			// Create meta model for types used in arrays
+			ArrayType arrayType = (ArrayType) typeMirror;
+			getDocumentTypes(arrayType.getComponentType(), models);
 		}
 	}
 

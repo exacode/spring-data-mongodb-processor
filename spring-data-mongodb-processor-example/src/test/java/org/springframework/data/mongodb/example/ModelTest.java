@@ -31,6 +31,8 @@ public class ModelTest {
 		Assertions.assertThat(Model_.doubleWrapperValue).isEqualTo(
 				"doubleWrapperValue");
 		Assertions.assertThat(Model_.modelValue._path).isEqualTo("modelValue");
+		Assertions.assertThat(Model_.subDocument._path)
+				.isEqualTo("subDocument");
 	}
 
 	@Test
@@ -62,6 +64,8 @@ public class ModelTest {
 		Assertions.assertThat(Model_.doubleWrapperArray._path).isEqualTo(
 				"doubleWrapperArray");
 		Assertions.assertThat(Model_.modelArray._path).isEqualTo("modelArray");
+		Assertions.assertThat(Model_.subDocumentArray._path).isEqualTo(
+				"subDocumentArray");
 	}
 
 	@Test
@@ -99,6 +103,8 @@ public class ModelTest {
 				"doubleWrapperArray.5");
 		Assertions.assertThat(Model_.modelArray.index(5)._path).isEqualTo(
 				"modelArray.5");
+		Assertions.assertThat(Model_.subDocumentArray.index(5)._path)
+				.isEqualTo("subDocumentArray.5");
 	}
 
 	@Test
@@ -121,6 +127,8 @@ public class ModelTest {
 				"bigDecimalList.5");
 		Assertions.assertThat(Model_.modelList.index(5)._path).isEqualTo(
 				"modelList.5");
+		Assertions.assertThat(Model_.subDocumentList.index(5)._path).isEqualTo(
+				"subDocumentList.5");
 	}
 
 	@Test
@@ -138,6 +146,8 @@ public class ModelTest {
 		Assertions.assertThat(Model_.bigDecimalList._path).isEqualTo(
 				"bigDecimalList");
 		Assertions.assertThat(Model_.modelList._path).isEqualTo("modelList");
+		Assertions.assertThat(Model_.subDocumentList._path).isEqualTo(
+				"subDocumentList");
 	}
 
 	@Test
@@ -176,5 +186,7 @@ public class ModelTest {
 				"modelValue.doubleWrapperValue");
 		Assertions.assertThat(Model_.modelValue.modelValue._path).isEqualTo(
 				"modelValue.modelValue");
+		Assertions.assertThat(Model_.subDocument.size).isEqualTo(
+				"subDocument.size");
 	}
 }

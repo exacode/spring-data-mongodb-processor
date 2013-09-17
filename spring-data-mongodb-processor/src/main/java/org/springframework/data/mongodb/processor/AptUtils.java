@@ -12,6 +12,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -126,8 +127,6 @@ public class AptUtils {
 	 */
 	public TypeMirror getCollectionTypeArgument(TypeMirror type) {
 		if (type == null || !isTypeElement(type) || !isA(type, collectionType)) {
-			logger.info("Not apropriate type #1 {} {} {}", type == null,
-					!isTypeElement(type), !isA(type, collectionType));
 			return null;
 		}
 		DeclaredType declaredType = (DeclaredType) type;
@@ -161,6 +160,34 @@ public class AptUtils {
 			return (TypeElement) ((DeclaredType) type).asElement();
 		}
 		return null;
+	}
+
+	public TypeMirror getUpperBound(TypeMirror type) {
+		TypeMirror lowerBound = type;
+		if (TypeKind.TYPEVAR.equals(type.getKind())) {
+			TypeVariable typeVariable = (TypeVariable) type;
+			TypeMirror typeVariableLowerBound = typeVariable.getUpperBound();
+			if (!TypeKind.NULL.equals(typeVariableLowerBound)
+					&& !types.isSameType(typeVariableLowerBound,
+							objectType.asType())) {
+				lowerBound = getUpperBound(typeVariableLowerBound);
+			}
+		} else if (TypeKind.WILDCARD.equals(type.getKind())) {
+			WildcardType wildcardVariable = (WildcardType) type;
+			TypeMirror wildcardTypeLowerBound = wildcardVariable
+					.getExtendsBound();
+			if (wildcardTypeLowerBound != null
+					&& !types.isSameType(wildcardTypeLowerBound,
+							objectType.asType())) {
+				lowerBound = getUpperBound(wildcardTypeLowerBound);
+			}
+		}
+		logger.info("Lower bound of {} is {}", type, lowerBound);
+		return lowerBound;
+	}
+
+	public Types getTypes() {
+		return types;
 	}
 
 	private boolean isTypeElement(TypeMirror type) {

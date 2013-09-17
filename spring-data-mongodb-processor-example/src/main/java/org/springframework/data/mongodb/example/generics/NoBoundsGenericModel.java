@@ -5,8 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class GenericModel<T extends SubDocument> {
-
+public class NoBoundsGenericModel<T> {
 	private T subDocument;
 	private List<T> subDocumentList;
 	private T[] subDocumentArray;

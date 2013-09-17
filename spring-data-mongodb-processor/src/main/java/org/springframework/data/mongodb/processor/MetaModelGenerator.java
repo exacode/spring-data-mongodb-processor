@@ -101,6 +101,7 @@ class MetaModelGenerator {
 	private void analyzeSingleField(VariableElement field, MetaModel metaModel,
 			String fieldName, TypeMirror typeMirror) {
 		boolean idField = field.getAnnotation(Id.class) != null;
+		typeMirror = aptUtils.getUpperBound(typeMirror);
 		if (isDocument(typeMirror)) {
 			Type type = getReferenceType(typeMirror);
 			metaModel.addReferenceField(new MetaModelField(fieldName, type,
@@ -118,6 +119,7 @@ class MetaModelGenerator {
 			ArrayType arrayType = (ArrayType) componentTypeMirror;
 			componentTypeMirror = arrayType.getComponentType();
 		}
+		componentTypeMirror = aptUtils.getUpperBound(componentTypeMirror);
 		if (isDocument(componentTypeMirror)) {
 			Type type = getReferenceType(componentTypeMirror);
 			metaModel
@@ -129,8 +131,8 @@ class MetaModelGenerator {
 
 	private void analyzeCollectionField(MetaModel metaModel, String fieldName,
 			TypeMirror typeMirror) {
-		TypeMirror collectionTypeArgument = aptUtils
-				.getCollectionTypeArgument(typeMirror);
+		TypeMirror collectionTypeArgument = aptUtils.getUpperBound(aptUtils
+				.getCollectionTypeArgument(typeMirror));
 		if (isDocument(collectionTypeArgument)) {
 			Type type = getReferenceType(collectionTypeArgument);
 			metaModel
