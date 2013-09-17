@@ -1,6 +1,7 @@
 package org.springframework.data.mongodb.processor.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,8 @@ public class MetaModel {
 	private final Map<String, MetaModelField> referenceArrayFields = new LinkedHashMap<String, MetaModelField>();
 	private final Map<String, MetaModelField> primitiveFields = new LinkedHashMap<String, MetaModelField>();
 	private final Map<String, MetaModelField> primitiveArrayFields = new LinkedHashMap<String, MetaModelField>();
+
+	private final Map<String, String> importedTypes = new HashMap<String, String>();
 
 	public MetaModel(String canonicalName) {
 		this.type = Type.createFromCanonicalName(canonicalName);
@@ -68,6 +71,30 @@ public class MetaModel {
 		return new ArrayList<MetaModelField>(primitiveArrayFields.values());
 	}
 
+	public boolean addImport(String pkg, String className) {
+		String canonicalName = (pkg == null) ? className : pkg + "."
+				+ className;
+		if (importedTypes.containsKey(className)) {
+			return false;
+		}
+		importedTypes.put(className, canonicalName);
+		return true;
+	}
+
+	public String getTypeReference(String pkg, String className) {
+		String canonicalName = (pkg == null) ? className : pkg + "."
+				+ className;
+		if (canonicalName.startsWith(type.getCanonicalName())) {
+			return className;
+		}
+		String importedCanonicalName = importedTypes.get(className);
+		if (importedCanonicalName != null
+				&& importedCanonicalName.equals(canonicalName)) {
+			return className;
+		}
+		return canonicalName;
+	}
+
 	private void addField(MetaModelField field,
 			Map<String, MetaModelField> targetFieldGroup) {
 		String fieldName = field.getFieldName();
@@ -76,5 +103,4 @@ public class MetaModel {
 		}
 		targetFieldGroup.put(fieldName, field);
 	}
-
 }

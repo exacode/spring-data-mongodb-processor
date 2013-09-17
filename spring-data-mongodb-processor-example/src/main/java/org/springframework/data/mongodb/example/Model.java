@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.example.unique.a.SubDocument;
 
 @Document
 public class Model {
@@ -121,6 +122,14 @@ public class Model {
 	private Model[] modelArray;
 
 	private List<Model> modelList;
+
+	/* Fields of type SubDocument */
+
+	private SubDocument subDocument;
+
+	private SubDocument[] subDocumentArray;
+
+	private List<SubDocument> subDocumentList;
 
 	public Byte getByteWrapperValue() {
 		return byteWrapperValue;
@@ -480,6 +489,30 @@ public class Model {
 
 	public void setModelList(List<Model> modelList) {
 		this.modelList = modelList;
+	}
+
+	public SubDocument getSubDocument() {
+		return subDocument;
+	}
+
+	public void setSubDocument(SubDocument subDocument) {
+		this.subDocument = subDocument;
+	}
+
+	public SubDocument[] getSubDocumentArray() {
+		return subDocumentArray;
+	}
+
+	public void setSubDocumentArray(SubDocument[] subDocumentArray) {
+		this.subDocumentArray = subDocumentArray;
+	}
+
+	public List<SubDocument> getSubDocumentList() {
+		return subDocumentList;
+	}
+
+	public void setSubDocumentList(List<SubDocument> subDocumentList) {
+		this.subDocumentList = subDocumentList;
 	}
 
 }

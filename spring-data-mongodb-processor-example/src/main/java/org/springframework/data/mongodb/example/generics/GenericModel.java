@@ -1,8 +1,9 @@
-package org.springframework.data.mongodb.example;
+package org.springframework.data.mongodb.example.generics;
 
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.example.Model;
 
 @Document
 public class GenericModel<T extends Model> {

@@ -14,6 +14,8 @@ import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.ElementFilter;
 
+import org.slf4j.LoggerFactory;
+
 /**
  * Determines which types need a dedicated meta model.
  * 
@@ -23,11 +25,10 @@ public class ModelTypeChooser {
 
 	private final AptUtils aptUtils;
 
-	private final Logger logger;
+	private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
 	public ModelTypeChooser(ProcessingEnvironment processingEnv) {
 		this.aptUtils = new AptUtils(processingEnv);
-		this.logger = new Logger(processingEnv);
 	}
 
 	/**
@@ -60,7 +61,7 @@ public class ModelTypeChooser {
 			}
 			// Create meta model for analyzed type
 			if (aptUtils.isDocument(typeElement.asType())) {
-				logger.note("Found document: " + typeElement);
+				logger.info("Found document: " + typeElement);
 				models.add(typeElement);
 				// Create Meta model for types of fields
 				for (VariableElement field : ElementFilter.fieldsIn(typeElement
@@ -73,7 +74,7 @@ public class ModelTypeChooser {
 				for (Element enclosedTypeElement : ElementFilter
 						.typesIn(typeElement.getEnclosedElements())) {
 					// Recurrence added for nested classes
-					logger.note("Check nested class: "
+					logger.info("Check nested class: "
 							+ enclosedTypeElement.asType());
 					getDocumentTypes(enclosedTypeElement.asType(), models);
 				}
@@ -81,8 +82,7 @@ public class ModelTypeChooser {
 				// Create meta model for types used in generic collection
 				// definitions
 				getDocumentTypes(
-						aptUtils.getCollectionTypeArgument(typeMirror),
-						models);
+						aptUtils.getCollectionTypeArgument(typeMirror), models);
 			} else if (typeMirror.getKind() == TypeKind.ARRAY) {
 				// Create meta model for types used in arrays
 				ArrayType arrayType = (ArrayType) typeMirror;
@@ -95,7 +95,7 @@ public class ModelTypeChooser {
 		Set<Modifier> fieldModifiers = field.getModifiers();
 		boolean persistable = !fieldModifiers.contains(Modifier.STATIC);
 		persistable = persistable
-				&& fieldModifiers.contains(Modifier.TRANSIENT);
+				&& !fieldModifiers.contains(Modifier.TRANSIENT);
 		return persistable;
 	}
 }

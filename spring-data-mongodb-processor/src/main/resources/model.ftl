@@ -1,13 +1,15 @@
 <#if (!metaModel.type.defaultPackage)>package ${metaModel.type.packageName};</#if>
 
 <#list metaModel.referenceFields as field> 
-<#if ("${field.type.canonicalName}" != "${metaModel.type.canonicalName}")>
-import ${field.type.canonicalName}_.${field.type.className}Field;
+<#if ("${field.type.canonicalName}" != "${metaModel.type.canonicalName}" 
+	&& metaModel.addImport(field.type.packageName, field.type.className))>
+import ${field.type.packageName}.${field.type.className};
 </#if>
 </#list>
 <#list metaModel.referenceArrayFields as field>
-<#if ("${field.type.canonicalName}" != "${metaModel.type.canonicalName}")>
-import ${field.type.canonicalName}_.${field.type.className}Array;
+<#if ("${field.type.canonicalName}" != "${metaModel.type.canonicalName}" 
+	&& metaModel.addImport(field.type.packageName, field.type.className))>
+import ${field.type.packageName}.${field.type.className};
 </#if>
 </#list>
 <#if metaModel.primitiveArrayFields?size gt 0>
@@ -20,10 +22,12 @@ public class ${metaModel.type.className} {
 	public final String _class = "_class";
 	
 	<#list metaModel.referenceFields as field>
-	public static final ${field.type.className}Field ${field.fieldName} = new ${field.type.className}Field("${field.fieldPathName}");
+	<#assign fieldTypeName=fieldType(field.type)/>
+	public static final ${fieldTypeName} ${field.fieldName} = new ${fieldTypeName}("${field.fieldPathName}");
 	</#list>
 	<#list metaModel.referenceArrayFields as field>
-	public static final ${field.type.className}Array ${field.fieldName} = new ${field.type.className}Array("${field.fieldPathName}");
+	<#assign arrayTypeName=arrayType(field.type)/>
+	public static final ${arrayTypeName} ${field.fieldName} = new ${arrayTypeName}("${field.fieldPathName}");
 	</#list>
 	<#list metaModel.primitiveFields as field>
 	public static final String ${field.fieldName} = "${field.fieldPathName}";
@@ -39,10 +43,10 @@ public class ${metaModel.type.className} {
 		public final String _class;
 		
 		<#list metaModel.referenceFields as field>
-		public final ${field.type.className}Field ${field.fieldName};
+		public final ${fieldType(field.type)} ${field.fieldName};
 		</#list>
 		<#list metaModel.referenceArrayFields as field>
-		public final ${field.type.className}Array ${field.fieldName};
+		public final ${arrayType(field.type)} ${field.fieldName};
 		</#list>
 		<#list metaModel.primitiveFields as field>
 		public final String ${field.fieldName};
@@ -60,10 +64,10 @@ public class ${metaModel.type.className} {
 			this._class = path + "._class";
 			if(depth < DocumentProcessorConfiguration.MAX_DEPTH) {
 				<#list metaModel.referenceFields as field>
-				this.${field.fieldName} = new ${field.type.className}Field(path + ".${field.fieldPathName}", depth + 1);
+				this.${field.fieldName} = new ${fieldType(field.type)}(path + ".${field.fieldPathName}", depth + 1);
 				</#list> 
 				<#list metaModel.referenceArrayFields as field>
-				this.${field.fieldName} = new ${field.type.className}Array(path + ".${field.fieldPathName}", depth + 1);
+				this.${field.fieldName} = new ${arrayType(field.type)}(path + ".${field.fieldPathName}", depth + 1);
 				</#list>
 			} else {
 				<#list metaModel.referenceFields as field>
@@ -99,3 +103,11 @@ public class ${metaModel.type.className} {
 	}
 	
 }
+
+<#function fieldType type>
+	<#return metaModel.getTypeReference(type.packageName, type.className) + '.' + type.className + 'Field'>
+</#function>
+
+<#function arrayType type>
+	<#return metaModel.getTypeReference(type.packageName, type.className) + '.' + type.className + 'Array'>
+</#function>

@@ -1,4 +1,4 @@
-package org.springframework.data.mongodb.example;
+package org.springframework.data.mongodb.example.inheritance;
 
 import org.fest.assertions.api.Assertions;
 import org.junit.Test;

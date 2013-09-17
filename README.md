@@ -53,14 +53,6 @@ In order to use this library add [repository](http://github.com/mendlik/mvn-repo
 		    </repository>
 		</repositories>
 
-		<dependencies>
-		    <dependency>
-		        <groupId>org.springframework.data</groupId>
-		        <artifactId>spring-data-mongodb-processor</artifactId>
-		        <version>${spring-data-mongodb-processor.version}</version>
-		    </dependency>
-		</dependencies>
-
 
 Why QueryDSL for MongoDB is not sufficient? 
 -------------------------------------------
