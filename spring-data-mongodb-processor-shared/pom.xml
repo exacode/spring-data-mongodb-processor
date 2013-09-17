@@ -1,0 +1,15 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>spring-data-mongodb-processor-shared</artifactId>
+
+	<name>Spring Data MongoDB - Shared resources of metamodel processor</name>
+	<description>Shared resources of Spring Data meta model processor for MongoDB documents</description>
+
+	<parent>
+		<groupId>org.springframework.data</groupId>
+		<artifactId>spring-data-mongodb-processor-parent</artifactId>
+		<version>0.0.5-SNAPSHOT</version> 
+	</parent>
+
+</project>

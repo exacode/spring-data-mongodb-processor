@@ -1,4 +1,3 @@
-
 import org.fest.assertions.api.Assertions;
 import org.junit.Test;
 
@@ -114,7 +113,7 @@ public class DefaultPackageModelTest {
 				.isEqualTo("floatWrapperArray.5");
 		Assertions.assertThat(DefaultPackageModel_.doubleWrapperArray.index(5))
 				.isEqualTo("doubleWrapperArray.5");
-		Assertions.assertThat(DefaultPackageModel_.modelArray.index(5))
+		Assertions.assertThat(DefaultPackageModel_.modelArray.index(5)._path)
 				.isEqualTo("modelArray.5");
 	}
 
@@ -140,7 +139,7 @@ public class DefaultPackageModelTest {
 				.isEqualTo("stringList.5");
 		Assertions.assertThat(DefaultPackageModel_.bigDecimalList.index(5))
 				.isEqualTo("bigDecimalList.5");
-		Assertions.assertThat(DefaultPackageModel_.modelList.index(5))
+		Assertions.assertThat(DefaultPackageModel_.modelList.index(5)._path)
 				.isEqualTo("modelList.5");
 	}
 

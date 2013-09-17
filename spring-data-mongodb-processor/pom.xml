@@ -38,6 +38,13 @@
 			<artifactId>log4j-over-slf4j</artifactId>
 			<version>${version.log4j-over-slf4j}</version>
 		</dependency>
+		
+		<!-- Processor shared resources -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>spring-data-mongodb-processor-shared</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

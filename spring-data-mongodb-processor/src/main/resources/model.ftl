@@ -11,8 +11,9 @@ import ${field.type.canonicalName}_.${field.type.className}Array;
 </#if>
 </#list>
 <#if metaModel.primitiveArrayFields?size gt 0>
-import org.springframework.data.mongodb.processor.meta.ArrayField;
+import org.springframework.data.mongodb.processor.shared.ArrayField;
 </#if>
+import org.springframework.data.mongodb.processor.shared.DocumentProcessorConfiguration;
 
 public class ${metaModel.type.className} {
  
@@ -33,8 +34,6 @@ public class ${metaModel.type.className} {
 
 	public static class ${metaModel.type.className}Field {
 	
-		private static final int MAX_DEPTH = 10;
-
 		public final String _path;
 		
 		public final String _class;
@@ -59,7 +58,7 @@ public class ${metaModel.type.className} {
 		public ${metaModel.type.className}Field(String path, int depth) {
 			this._path = path;
 			this._class = path + "._class";
-			if(depth < MAX_DEPTH) {
+			if(depth < DocumentProcessorConfiguration.MAX_DEPTH) {
 				<#list metaModel.referenceFields as field>
 				this.${field.fieldName} = new ${field.type.className}Field(path + ".${field.fieldPathName}", depth + 1);
 				</#list> 
@@ -86,8 +85,12 @@ public class ${metaModel.type.className} {
 	 
 	public static class ${metaModel.type.className}Array extends ${metaModel.type.className}Field {
  
-		public ${metaModel.type.className}Array(String path) {
-			super(path);
+ 		public ${metaModel.type.className}Array(String path) {
+			super(path, 0);
+		}
+ 
+		public ${metaModel.type.className}Array(String path, int depth) {
+			super(path, depth);
 		}
 
 		public ${metaModel.type.className}Array index(int idx) {

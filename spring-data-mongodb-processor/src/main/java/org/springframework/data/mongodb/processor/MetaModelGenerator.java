@@ -13,6 +13,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.processor.model.MetaModel;
 import org.springframework.data.mongodb.processor.model.MetaModelField;
@@ -25,15 +26,17 @@ import org.springframework.data.mongodb.processor.model.Type;
  */
 class MetaModelGenerator {
 
-	private final ModelUtils modelUtils;
+	private final AptUtils aptUtils;
 
 	private final ProcessingEnvironment processingEnv;
 
 	private final Set<TypeElement> modelTypes;
 
+	private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
+
 	public MetaModelGenerator(ProcessingEnvironment processingEnv,
 			Set<TypeElement> modelTypes) {
-		this.modelUtils = new ModelUtils(processingEnv);
+		this.aptUtils = new AptUtils(processingEnv);
 		this.processingEnv = processingEnv;
 		this.modelTypes = modelTypes;
 	}
@@ -86,25 +89,26 @@ class MetaModelGenerator {
 		}
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror typeMirror = field.asType();
-		if (modelUtils.isCollection(typeMirror)) {
+		if (aptUtils.isCollection(typeMirror)) {
 			analyzeCollectionField(metaModel, fieldName, typeMirror);
 		} else if (typeMirror.getKind() == TypeKind.ARRAY) {
 			analyzeArrayField(metaModel, fieldName, typeMirror);
-		} else if (isDocument(typeMirror)) {
-			analyzeDocumentField(field, metaModel, fieldName, typeMirror);
 		} else {
-			boolean idField = field.getAnnotation(Id.class) != null;
-			metaModel.addPrimitiveField(new MetaModelField(fieldName, null,
-					idField));
+			analyzeSingleField(field, metaModel, fieldName, typeMirror);
 		}
 	}
 
-	private void analyzeDocumentField(VariableElement field,
-			MetaModel metaModel, String fieldName, TypeMirror typeMirror) {
-		Type type = getReferenceType(typeMirror);
+	private void analyzeSingleField(VariableElement field, MetaModel metaModel,
+			String fieldName, TypeMirror typeMirror) {
 		boolean idField = field.getAnnotation(Id.class) != null;
-		metaModel.addReferenceField(new MetaModelField(fieldName, type,
-				idField));
+		if (isDocument(typeMirror)) {
+			Type type = getReferenceType(typeMirror);
+			metaModel.addReferenceField(new MetaModelField(fieldName, type,
+					idField));
+		} else {
+			metaModel.addPrimitiveField(new MetaModelField(fieldName, null,
+					idField));
+		}
 	}
 
 	private void analyzeArrayField(MetaModel metaModel, String fieldName,
@@ -114,10 +118,10 @@ class MetaModelGenerator {
 			ArrayType arrayType = (ArrayType) componentTypeMirror;
 			componentTypeMirror = arrayType.getComponentType();
 		}
-		if (isDocument(typeMirror)) {
+		if (isDocument(componentTypeMirror)) {
 			Type type = getReferenceType(componentTypeMirror);
-			metaModel.addReferenceArrayField(new MetaModelField(fieldName,
-					type));
+			metaModel
+					.addReferenceArrayField(new MetaModelField(fieldName, type));
 		} else {
 			metaModel.addPrimitiveArrayField(new MetaModelField(fieldName));
 		}
@@ -125,24 +129,24 @@ class MetaModelGenerator {
 
 	private void analyzeCollectionField(MetaModel metaModel, String fieldName,
 			TypeMirror typeMirror) {
-		TypeMirror collectionTypeArgument = modelUtils
+		TypeMirror collectionTypeArgument = aptUtils
 				.getCollectionTypeArgument(typeMirror);
-		if (isDocument(typeMirror)) {
+		if (isDocument(collectionTypeArgument)) {
 			Type type = getReferenceType(collectionTypeArgument);
-			metaModel.addReferenceArrayField(new MetaModelField(fieldName,
-					type));
+			metaModel
+					.addReferenceArrayField(new MetaModelField(fieldName, type));
 		} else {
 			metaModel.addPrimitiveArrayField(new MetaModelField(fieldName));
 		}
 	}
 
 	private boolean isDocument(TypeMirror typeMirror) {
-		return modelUtils.isDocument(typeMirror)
-				&& modelTypes.contains(modelUtils.toTypeElement(typeMirror));
+		return aptUtils.isDocument(typeMirror)
+				&& modelTypes.contains(aptUtils.toTypeElement(typeMirror));
 	}
 
 	private Type getReferenceType(TypeMirror typeMirror) {
-		TypeElement typeElement = modelUtils.toTypeElement(typeMirror);
+		TypeElement typeElement = aptUtils.toTypeElement(typeMirror);
 		String canonicalName = processingEnv.getElementUtils()
 				.getBinaryName(typeElement).toString().replaceAll("\\$", "_")
 				.concat("_");

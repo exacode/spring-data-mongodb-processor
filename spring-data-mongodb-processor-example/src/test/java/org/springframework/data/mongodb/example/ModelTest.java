@@ -97,7 +97,7 @@ public class ModelTest {
 				"floatWrapperArray.5");
 		Assertions.assertThat(Model_.doubleWrapperArray.index(5)).isEqualTo(
 				"doubleWrapperArray.5");
-		Assertions.assertThat(Model_.modelArray.index(5)).isEqualTo(
+		Assertions.assertThat(Model_.modelArray.index(5)._path).isEqualTo(
 				"modelArray.5");
 	}
 
@@ -119,7 +119,7 @@ public class ModelTest {
 				"stringList.5");
 		Assertions.assertThat(Model_.bigDecimalList.index(5)).isEqualTo(
 				"bigDecimalList.5");
-		Assertions.assertThat(Model_.modelList.index(5)).isEqualTo(
+		Assertions.assertThat(Model_.modelList.index(5)._path).isEqualTo(
 				"modelList.5");
 	}
 

@@ -57,6 +57,13 @@
 			<artifactId>joda-time</artifactId>
 			<version>${version.joda-time}</version>
 		</dependency>
+		
+		<!-- Processor shared resources -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>spring-data-mongodb-processor-shared</artifactId>
+			<version>${project.version}</version> 
+		</dependency>
 	</dependencies>
 
 	<build>

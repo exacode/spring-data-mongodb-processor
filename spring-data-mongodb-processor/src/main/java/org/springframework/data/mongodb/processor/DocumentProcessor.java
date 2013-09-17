@@ -51,9 +51,6 @@ public class DocumentProcessor extends AbstractProcessor {
 			MetaModel metaModel = generator.analyzeType(typeElement);
 			writer.write(metaModel);
 		}
-		if (!modelTypes.isEmpty()) {
-			writer.writeUtilClasses();
-		}
 
 		return true;
 	}

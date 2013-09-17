@@ -3,7 +3,6 @@ package org.springframework.data.mongodb.processor;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,10 +34,6 @@ public class MetaModelWriter {
 
 	private static final String META_MODEL_TEMPLATE = "model.ftl";
 
-	private static final String[][] UTIL_CLASS_TEMPLATES = new String[][] { {
-			"array-field.ftl",
-			"org.springframework.data.mongodb.processor.meta.ArrayField" } };
-
 	public MetaModelWriter(ProcessingEnvironment processingEnv) {
 		this.processingEnv = processingEnv;
 		this.logger = new Logger(processingEnv);
@@ -52,13 +47,6 @@ public class MetaModelWriter {
 		context.put("metaModel", metaModel);
 		writeTemplate(context, META_MODEL_TEMPLATE, metaModel.getType()
 				.getCanonicalName());
-	}
-
-	public void writeUtilClasses() {
-		for (String[] utilClass : UTIL_CLASS_TEMPLATES) {
-			writeTemplate(Collections.<String, Object> emptyMap(),
-					utilClass[0], utilClass[1]);
-		}
 	}
 
 	public void writeTemplate(Map<String, Object> context,

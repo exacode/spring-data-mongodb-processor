@@ -62,19 +62,6 @@ In order to use this library add [repository](http://github.com/mendlik/mvn-repo
 		</dependencies>
 
 
-Projects
---------
-This project is separated into projects:
-
-		spring-data-mongodb-processor-parent
-		   |- spring-data-mongodb-processor-example
-		   |- spring-data-mongodb-processor
-
-- `spring-data-mongodb-processor-parent` - Just groups subprojects.
-- `spring-data-mongodb-processor-example` - Contains test cases and an usage example of spring-data-mongodb-processor.
-- `spring-data-mongodb-processor` - Contains source of annotation processor.
-
-
 Why QueryDSL for MongoDB is not sufficient? 
 -------------------------------------------
 - QueryDSL can be used only in queries. What about updating and deleting data?

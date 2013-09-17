@@ -2,6 +2,7 @@ package org.springframework.data.mongodb.processor;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,13 +16,15 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
+import org.slf4j.LoggerFactory;
+
 /**
- * Java APT mechanism utility class used during meta model generation.
+ * Java APT utility mechanism. Used during meta model generation.
  * 
  * @author mendlik
  * 
  */
-public class ModelUtils {
+public class AptUtils {
 	private final Types types;
 	private final TypeElement collectionType;
 	private final TypeElement objectType;
@@ -29,7 +32,9 @@ public class ModelUtils {
 	private final Set<TypeElement> nonDocumentTypes = new HashSet<TypeElement>();
 	private final Map<String, DeclaredType> cachedParentTypes = new HashMap<String, DeclaredType>();
 
-	public ModelUtils(ProcessingEnvironment processingEnv) {
+	private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
+
+	public AptUtils(ProcessingEnvironment processingEnv) {
 		Elements elements = processingEnv.getElementUtils();
 		this.types = processingEnv.getTypeUtils();
 		this.collectionType = elements.getTypeElement("java.util.Collection");
@@ -120,17 +125,24 @@ public class ModelUtils {
 	 * 
 	 */
 	public TypeMirror getCollectionTypeArgument(TypeMirror type) {
-		if (type == null || !(type instanceof TypeElement)
-				|| !isA(type, collectionType)) {
+		if (type == null || !isTypeElement(type) || !isA(type, collectionType)) {
+			logger.info("Not apropriate type #1 {} {} {}", type == null,
+					!isTypeElement(type), !isA(type, collectionType));
 			return null;
 		}
-		TypeElement typeElement = (TypeElement) type;
+		DeclaredType declaredType = (DeclaredType) type;
+		TypeElement typeElement = toTypeElement(type);
 		while (typeElement != null && !objectType.equals(typeElement)) {
 			for (TypeMirror typeInterface : typeElement.getInterfaces()) {
 				TypeElement typeInterfaceElement = toTypeElement(typeInterface);
 				if (collectionType.equals(typeInterfaceElement)) {
-					return toDeclaredType(typeInterface).getTypeArguments()
-							.get(0);
+					List<? extends TypeMirror> typeArgsList = declaredType
+							.getTypeArguments();
+					TypeMirror[] typeArgs = typeArgsList
+							.toArray(new TypeMirror[typeArgsList.size()]);
+					declaredType = types.getDeclaredType(typeInterfaceElement,
+							typeArgs);
+					return declaredType.getTypeArguments().get(0);
 				}
 			}
 			typeElement = toTypeElement(typeElement.getSuperclass());

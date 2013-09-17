@@ -1,4 +1,4 @@
-package org.springframework.data.mongodb.processor.meta;
+package org.springframework.data.mongodb.processor.shared;
 
 public class ArrayField {
 

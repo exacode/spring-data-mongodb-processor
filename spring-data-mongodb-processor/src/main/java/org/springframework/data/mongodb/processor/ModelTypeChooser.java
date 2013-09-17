@@ -10,6 +10,8 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
+import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.ElementFilter;
 
 /**
@@ -19,12 +21,12 @@ import javax.lang.model.util.ElementFilter;
  */
 public class ModelTypeChooser {
 
-	private final ModelUtils modelUtils;
+	private final AptUtils aptUtils;
 
 	private final Logger logger;
 
 	public ModelTypeChooser(ProcessingEnvironment processingEnv) {
-		this.modelUtils = new ModelUtils(processingEnv);
+		this.aptUtils = new AptUtils(processingEnv);
 		this.logger = new Logger(processingEnv);
 	}
 
@@ -42,38 +44,50 @@ public class ModelTypeChooser {
 	 *            - unique set of types that requires meta model generation
 	 */
 	public void getDocumentTypes(TypeMirror typeMirror, Set<TypeElement> models) {
-		TypeElement typeElement = modelUtils.toTypeElement(typeMirror);
-		if (typeElement == null || models.contains(typeElement)) {
+		if (typeMirror == null) {
 			return;
 		}
-		// Create meta model for analyzed type
-		if (modelUtils.isDocument(typeElement.asType())) {
-			logger.note("Found document: " + typeElement);
-			models.add(typeElement);
-			// Create Meta model for types of fields
-			for (VariableElement field : ElementFilter.fieldsIn(typeElement
-					.getEnclosedElements())) {
-				if (isPersistableField(field)) {
-					getDocumentTypes(field.asType(), models);
+		if (TypeKind.TYPEVAR.equals(typeMirror.getKind())) {
+			TypeVariable typeVariable = (TypeVariable) typeMirror;
+			getDocumentTypes(typeVariable.getLowerBound(), models);
+		} else if (TypeKind.WILDCARD.equals(typeMirror.getKind())) {
+			WildcardType wildcardVariable = (WildcardType) typeMirror;
+			getDocumentTypes(wildcardVariable.getExtendsBound(), models);
+		} else {
+			TypeElement typeElement = aptUtils.toTypeElement(typeMirror);
+			if (typeElement == null || models.contains(typeElement)) {
+				return;
+			}
+			// Create meta model for analyzed type
+			if (aptUtils.isDocument(typeElement.asType())) {
+				logger.note("Found document: " + typeElement);
+				models.add(typeElement);
+				// Create Meta model for types of fields
+				for (VariableElement field : ElementFilter.fieldsIn(typeElement
+						.getEnclosedElements())) {
+					if (isPersistableField(field)) {
+						getDocumentTypes(field.asType(), models);
+					}
 				}
+				// Create meta model for nested classes
+				for (Element enclosedTypeElement : ElementFilter
+						.typesIn(typeElement.getEnclosedElements())) {
+					// Recurrence added for nested classes
+					logger.note("Check nested class: "
+							+ enclosedTypeElement.asType());
+					getDocumentTypes(enclosedTypeElement.asType(), models);
+				}
+			} else if (aptUtils.isCollection(typeMirror)) {
+				// Create meta model for types used in generic collection
+				// definitions
+				getDocumentTypes(
+						aptUtils.getCollectionTypeArgument(typeMirror),
+						models);
+			} else if (typeMirror.getKind() == TypeKind.ARRAY) {
+				// Create meta model for types used in arrays
+				ArrayType arrayType = (ArrayType) typeMirror;
+				getDocumentTypes(arrayType.getComponentType(), models);
 			}
-			// Create meta model for nested classes
-			for (Element enclosedTypeElement : ElementFilter
-					.typesIn(typeElement.getEnclosedElements())) {
-				// Recurrence added for nested classes
-				logger.note("Check nested class: "
-						+ enclosedTypeElement.asType());
-				getDocumentTypes(enclosedTypeElement.asType(), models);
-			}
-		} else if (modelUtils.isCollection(typeMirror)) {
-			// Create meta model for types used in generic collection
-			// definitions
-			getDocumentTypes(modelUtils.getCollectionTypeArgument(typeMirror),
-					models);
-		} else if (typeMirror.getKind() == TypeKind.ARRAY) {
-			// Create meta model for types used in arrays
-			ArrayType arrayType = (ArrayType) typeMirror;
-			getDocumentTypes(arrayType.getComponentType(), models);
 		}
 	}
 
