@@ -26,7 +26,8 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class AptUtils {
-	private final Types types;
+	private final Elements elementUtils;
+	private final Types typeUtils;
 	private final TypeElement collectionType;
 	private final TypeElement objectType;
 	private final WildcardType nullWildcardType;
@@ -36,40 +37,46 @@ public class AptUtils {
 	private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
 	public AptUtils(ProcessingEnvironment processingEnv) {
-		Elements elements = processingEnv.getElementUtils();
-		this.types = processingEnv.getTypeUtils();
-		this.collectionType = elements.getTypeElement("java.util.Collection");
-		this.objectType = elements.getTypeElement("java.lang.Object");
-		this.nullWildcardType = types.getWildcardType(null, null);
+		this.elementUtils = processingEnv.getElementUtils();
+		this.typeUtils = processingEnv.getTypeUtils();
+		this.collectionType = elementUtils
+				.getTypeElement("java.util.Collection");
+		this.objectType = elementUtils.getTypeElement("java.lang.Object");
+		this.nullWildcardType = typeUtils.getWildcardType(null, null);
 
 		// MongoDB Non document types from MongoMappingContext
 		// Primitive wrappers
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.Integer"));
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.Long"));
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.Float"));
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.Double"));
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.Character"));
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.Byte"));
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.Short"));
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.Boolean"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.lang.Integer"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.lang.Long"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.lang.Float"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.lang.Double"));
+		nonDocumentTypes
+				.add(elementUtils.getTypeElement("java.lang.Character"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.lang.Byte"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.lang.Short"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.lang.Boolean"));
 		// Basic types
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.String"));
-		nonDocumentTypes.add(elements.getTypeElement("java.util.Date"));
-		nonDocumentTypes.add(elements.getTypeElement("java.net.URL"));
-		nonDocumentTypes.add(elements.getTypeElement("java.math.BigInteger"));
-		nonDocumentTypes.add(elements.getTypeElement("java.math.BigDecimal"));
-		nonDocumentTypes.add(elements.getTypeElement("java.util.Collection"));
-		nonDocumentTypes.add(elements.getTypeElement("java.lang.Void"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.lang.String"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.util.Date"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.net.URL"));
+		nonDocumentTypes.add(elementUtils
+				.getTypeElement("java.math.BigInteger"));
+		nonDocumentTypes.add(elementUtils
+				.getTypeElement("java.math.BigDecimal"));
+		nonDocumentTypes.add(elementUtils
+				.getTypeElement("java.util.Collection"));
+		nonDocumentTypes.add(elementUtils.getTypeElement("java.lang.Void"));
 		// BSON types
-		nonDocumentTypes
-				.add(elements.getTypeElement("org.bson.types.ObjectId"));
+		nonDocumentTypes.add(elementUtils
+				.getTypeElement("org.bson.types.ObjectId"));
 		// Joda date types
-		nonDocumentTypes.add(elements.getTypeElement("org.joda.time.DateTime"));
-		nonDocumentTypes
-				.add(elements.getTypeElement("org.joda.time.LocalDate"));
-		nonDocumentTypes.add(elements
+		nonDocumentTypes.add(elementUtils
+				.getTypeElement("org.joda.time.DateTime"));
+		nonDocumentTypes.add(elementUtils
+				.getTypeElement("org.joda.time.LocalDate"));
+		nonDocumentTypes.add(elementUtils
 				.getTypeElement("org.joda.time.LocalDateTime"));
-		nonDocumentTypes.add(elements
+		nonDocumentTypes.add(elementUtils
 				.getTypeElement("org.joda.time.DateMidnight"));
 	}
 
@@ -139,8 +146,8 @@ public class AptUtils {
 							.getTypeArguments();
 					TypeMirror[] typeArgs = typeArgsList
 							.toArray(new TypeMirror[typeArgsList.size()]);
-					declaredType = types.getDeclaredType(typeInterfaceElement,
-							typeArgs);
+					declaredType = typeUtils.getDeclaredType(
+							typeInterfaceElement, typeArgs);
 					return declaredType.getTypeArguments().get(0);
 				}
 			}
@@ -168,7 +175,7 @@ public class AptUtils {
 			TypeVariable typeVariable = (TypeVariable) type;
 			TypeMirror typeVariableLowerBound = typeVariable.getUpperBound();
 			if (!TypeKind.NULL.equals(typeVariableLowerBound)
-					&& !types.isSameType(typeVariableLowerBound,
+					&& !typeUtils.isSameType(typeVariableLowerBound,
 							objectType.asType())) {
 				lowerBound = getUpperBound(typeVariableLowerBound);
 			}
@@ -177,7 +184,7 @@ public class AptUtils {
 			TypeMirror wildcardTypeLowerBound = wildcardVariable
 					.getExtendsBound();
 			if (wildcardTypeLowerBound != null
-					&& !types.isSameType(wildcardTypeLowerBound,
+					&& !typeUtils.isSameType(wildcardTypeLowerBound,
 							objectType.asType())) {
 				lowerBound = getUpperBound(wildcardTypeLowerBound);
 			}
@@ -186,8 +193,12 @@ public class AptUtils {
 		return lowerBound;
 	}
 
-	public Types getTypes() {
-		return types;
+	public Types getTypeUtils() {
+		return typeUtils;
+	}
+
+	public Elements getElementUtils() {
+		return elementUtils;
 	}
 
 	private boolean isTypeElement(TypeMirror type) {
@@ -197,13 +208,6 @@ public class AptUtils {
 
 	private boolean isDeclaredType(TypeMirror type) {
 		return type instanceof DeclaredType;
-	}
-
-	private DeclaredType toDeclaredType(TypeMirror type) {
-		if (isDeclaredType(type)) {
-			return (DeclaredType) type;
-		}
-		return null;
 	}
 
 	private boolean isEnum(TypeMirror type) {
@@ -229,13 +233,13 @@ public class AptUtils {
 			}
 
 			// Locate the correct DeclaredType to match with the type
-			parentType = types.getDeclaredType(typeElement, typeMirrors);
+			parentType = typeUtils.getDeclaredType(typeElement, typeMirrors);
 
 			// Remember this DeclaredType
 			cachedParentTypes.put(typeElement.getQualifiedName().toString(),
 					parentType);
 		}
 		// Is the given type able to be assigned as the typeElement?
-		return types.isAssignable(type, parentType);
+		return typeUtils.isAssignable(type, parentType);
 	}
 }

@@ -88,6 +88,11 @@ public class ${metaModel.type.className} {
 			this.${field.fieldName} = new ArrayField(path + ".${field.fieldPathName}");
 			</#list>
 		} 
+		
+		@Override
+		public String toString() {
+			return _path;
+		}
 		 
 	}
 	 
@@ -103,6 +108,11 @@ public class ${metaModel.type.className} {
 
 		public ${metaModel.type.className}Array index(int idx) {
 			return new ${metaModel.type.className}Array(_path + "." + idx);
+		}
+		
+		@Override
+		public String toString() {
+			return _path;
 		}
 	}
 	

@@ -32,7 +32,8 @@ public class DocumentProcessor extends AbstractProcessor {
 		}
 
 		// Find unique types that needs meta model
-		ModelTypeChooser typeChooser = new ModelTypeChooser(processingEnv);
+		AptUtils aptUtils = new AptUtils(processingEnv);
+		ModelTypeChooser typeChooser = new ModelTypeChooser(aptUtils);
 		Set<TypeElement> modelTypes = new HashSet<TypeElement>();
 		for (TypeElement te : annotations) {
 			for (Element element : roundEnv.getElementsAnnotatedWith(te)) {
@@ -42,7 +43,7 @@ public class DocumentProcessor extends AbstractProcessor {
 
 		// Create meta model for appropriate types
 		MetaModelWriter writer = new MetaModelWriter(processingEnv);
-		MetaModelGenerator generator = new MetaModelGenerator(processingEnv,
+		MetaModelGenerator generator = new MetaModelGenerator(aptUtils,
 				modelTypes);
 		for (TypeElement typeElement : modelTypes) {
 			MetaModel metaModel = generator.analyzeType(typeElement);

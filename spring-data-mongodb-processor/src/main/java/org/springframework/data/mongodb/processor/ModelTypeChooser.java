@@ -2,7 +2,6 @@ package org.springframework.data.mongodb.processor;
 
 import java.util.Set;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -21,8 +20,8 @@ public class ModelTypeChooser {
 
 	private final AptUtils aptUtils;
 
-	public ModelTypeChooser(ProcessingEnvironment processingEnv) {
-		this.aptUtils = new AptUtils(processingEnv);
+	public ModelTypeChooser(AptUtils aptUtils) {
+		this.aptUtils = aptUtils;
 	}
 
 	/**

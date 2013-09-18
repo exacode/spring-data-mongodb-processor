@@ -3,7 +3,6 @@ package org.springframework.data.mongodb.processor;
 import java.io.IOException;
 import java.util.Set;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -13,7 +12,6 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.processor.model.MetaModel;
 import org.springframework.data.mongodb.processor.model.MetaModelField;
@@ -28,16 +26,10 @@ class MetaModelGenerator {
 
 	private final AptUtils aptUtils;
 
-	private final ProcessingEnvironment processingEnv;
-
 	private final Set<TypeElement> modelTypes;
 
-	private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
-
-	public MetaModelGenerator(ProcessingEnvironment processingEnv,
-			Set<TypeElement> modelTypes) {
-		this.aptUtils = new AptUtils(processingEnv);
-		this.processingEnv = processingEnv;
+	public MetaModelGenerator(AptUtils aptUtils, Set<TypeElement> modelTypes) {
+		this.aptUtils = aptUtils;
 		this.modelTypes = modelTypes;
 	}
 
@@ -51,8 +43,8 @@ class MetaModelGenerator {
 	 * @throws IOException
 	 */
 	public MetaModel analyzeType(TypeElement type) {
-		String outputFileName = processingEnv.getElementUtils()
-				.getBinaryName(type).toString();
+		String outputFileName = aptUtils.getElementUtils().getBinaryName(type)
+				.toString();
 		outputFileName = outputFileName.replaceAll("\\$", "_").concat("_");
 		MetaModel metaModel = new MetaModel(outputFileName);
 
@@ -149,7 +141,7 @@ class MetaModelGenerator {
 
 	private Type getReferenceType(TypeMirror typeMirror) {
 		TypeElement typeElement = aptUtils.toTypeElement(typeMirror);
-		String canonicalName = processingEnv.getElementUtils()
+		String canonicalName = aptUtils.getElementUtils()
 				.getBinaryName(typeElement).toString().replaceAll("\\$", "_")
 				.concat("_");
 		return Type.createFromCanonicalName(canonicalName);
