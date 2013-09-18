@@ -17,8 +17,6 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-import org.slf4j.LoggerFactory;
-
 /**
  * Java APT utility mechanism. Used during meta model generation.
  * 
@@ -33,8 +31,6 @@ public class AptUtils {
 	private final WildcardType nullWildcardType;
 	private final Set<TypeElement> nonDocumentTypes = new HashSet<TypeElement>();
 	private final Map<String, DeclaredType> cachedParentTypes = new HashMap<String, DeclaredType>();
-
-	private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
 	public AptUtils(ProcessingEnvironment processingEnv) {
 		this.elementUtils = processingEnv.getElementUtils();
@@ -189,7 +185,6 @@ public class AptUtils {
 				lowerBound = getUpperBound(wildcardTypeLowerBound);
 			}
 		}
-		logger.info("Lower bound of {} is {}", type, lowerBound);
 		return lowerBound;
 	}
 
