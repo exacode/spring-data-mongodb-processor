@@ -6,7 +6,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -59,15 +58,13 @@ public class ModelTypeChooser {
 				// Recurrence added for nested classes
 				getDocumentTypes(enclosedTypeElement.asType(), models);
 			}
-		} else if (aptUtils.isCollection(typeMirror)) {
+		} else if (aptUtils.isCollection(typeMirror)
+				|| TypeKind.ARRAY.equals(typeMirror)) {
 			// Create meta model for types used in generic collection
 			// definitions
-			getDocumentTypes(aptUtils.getCollectionTypeArgument(typeMirror),
+			getDocumentTypes(
+					aptUtils.getCollectionOrArrayTypeArgument(typeMirror),
 					models);
-		} else if (typeMirror.getKind() == TypeKind.ARRAY) {
-			// Create meta model for types used in arrays
-			ArrayType arrayType = (ArrayType) typeMirror;
-			getDocumentTypes(arrayType.getComponentType(), models);
 		}
 	}
 

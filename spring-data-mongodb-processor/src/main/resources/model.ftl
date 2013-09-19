@@ -1,5 +1,13 @@
 <#if (!metaModel.type.defaultPackage)>package ${metaModel.type.packageName};</#if>
 
+<#if metaModel.primitiveArrayFields?size gt 0>
+<#assign imported=metaModel.addImport('org.springframework.data.mongodb.processor.shared', 'ArrayField')/>
+import org.springframework.data.mongodb.processor.shared.ArrayField;
+</#if>
+<#if (metaModel.referenceFields?has_content || metaModel.referenceArrayFields?has_content)>
+<#assign imported=metaModel.addImport('org.springframework.data.mongodb.processor.shared', 'DocumentProcessorConfiguration')/>
+import org.springframework.data.mongodb.processor.shared.DocumentProcessorConfiguration;
+</#if>
 <#list metaModel.referenceFields as field> 
 <#if ("${field.type.canonicalName}" != "${metaModel.type.canonicalName}" 
 	&& metaModel.addImport(field.type.packageName, field.type.className))>
@@ -12,12 +20,7 @@ import ${field.type.packageName}.${field.type.className};
 import ${field.type.packageName}.${field.type.className};
 </#if>
 </#list>
-<#if metaModel.primitiveArrayFields?size gt 0>
-import org.springframework.data.mongodb.processor.shared.ArrayField;
-</#if>
-<#if (metaModel.referenceFields?has_content || metaModel.referenceArrayFields?has_content)>
-import org.springframework.data.mongodb.processor.shared.DocumentProcessorConfiguration;
-</#if>
+
 
 public class ${metaModel.type.className} {
  

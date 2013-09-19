@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -81,9 +80,8 @@ class MetaModelGenerator {
 		}
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror typeMirror = field.asType();
-		if (aptUtils.isCollection(typeMirror)) {
-			analyzeCollectionField(metaModel, fieldName, typeMirror);
-		} else if (typeMirror.getKind() == TypeKind.ARRAY) {
+		if (aptUtils.isCollection(typeMirror)
+				|| typeMirror.getKind() == TypeKind.ARRAY) {
 			analyzeArrayField(metaModel, fieldName, typeMirror);
 		} else {
 			analyzeSingleField(field, metaModel, fieldName, typeMirror);
@@ -106,27 +104,11 @@ class MetaModelGenerator {
 
 	private void analyzeArrayField(MetaModel metaModel, String fieldName,
 			TypeMirror typeMirror) {
-		TypeMirror componentTypeMirror = typeMirror;
-		while (componentTypeMirror.getKind() == TypeKind.ARRAY) {
-			ArrayType arrayType = (ArrayType) componentTypeMirror;
-			componentTypeMirror = arrayType.getComponentType();
-		}
+		TypeMirror componentTypeMirror = aptUtils
+				.getCollectionOrArrayTypeArgument(typeMirror);
 		componentTypeMirror = aptUtils.getUpperBound(componentTypeMirror);
 		if (isDocument(componentTypeMirror)) {
 			Type type = getReferenceType(componentTypeMirror);
-			metaModel
-					.addReferenceArrayField(new MetaModelField(fieldName, type));
-		} else {
-			metaModel.addPrimitiveArrayField(new MetaModelField(fieldName));
-		}
-	}
-
-	private void analyzeCollectionField(MetaModel metaModel, String fieldName,
-			TypeMirror typeMirror) {
-		TypeMirror collectionTypeArgument = aptUtils.getUpperBound(aptUtils
-				.getCollectionTypeArgument(typeMirror));
-		if (isDocument(collectionTypeArgument)) {
-			Type type = getReferenceType(collectionTypeArgument);
 			metaModel
 					.addReferenceArrayField(new MetaModelField(fieldName, type));
 		} else {
