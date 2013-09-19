@@ -72,8 +72,7 @@ public class MetaModel {
 	}
 
 	public boolean addImport(String pkg, String className) {
-		String canonicalName = (pkg == null) ? className : pkg + "."
-				+ className;
+		String canonicalName = toCanonicalName(pkg, className);
 		if (importedTypes.containsKey(className)) {
 			return false;
 		}
@@ -82,8 +81,7 @@ public class MetaModel {
 	}
 
 	public String getTypeReference(String pkg, String className) {
-		String canonicalName = (pkg == null) ? className : pkg + "."
-				+ className;
+		String canonicalName = toCanonicalName(pkg, className);
 		if (canonicalName.startsWith(type.getCanonicalName())) {
 			return className;
 		}
@@ -93,6 +91,10 @@ public class MetaModel {
 			return className;
 		}
 		return canonicalName;
+	}
+
+	private String toCanonicalName(String pkg, String className) {
+		return (pkg == null) ? className : pkg + "." + className;
 	}
 
 	private void addField(MetaModelField field,
