@@ -32,8 +32,10 @@ public class AptUtils {
 	private final WildcardType nullWildcardType;
 	private final Set<TypeElement> nonDocumentTypes = new HashSet<TypeElement>();
 	private final Map<String, DeclaredType> cachedParentTypes = new HashMap<String, DeclaredType>();
+	private final AptLogger aptLogger;
 
 	public AptUtils(ProcessingEnvironment processingEnv) {
+		this.aptLogger = new AptLogger(processingEnv);
 		this.elementUtils = processingEnv.getElementUtils();
 		this.typeUtils = processingEnv.getTypeUtils();
 		this.collectionType = elementUtils
@@ -178,14 +180,14 @@ public class AptUtils {
 	}
 
 	public TypeMirror getUpperBound(TypeMirror type) {
-		TypeMirror lowerBound = type;
+		TypeMirror upperBound = type;
 		if (TypeKind.TYPEVAR.equals(type.getKind())) {
 			TypeVariable typeVariable = (TypeVariable) type;
 			TypeMirror typeVariableLowerBound = typeVariable.getUpperBound();
 			if (!TypeKind.NULL.equals(typeVariableLowerBound)
 					&& !typeUtils.isSameType(typeVariableLowerBound,
 							objectType.asType())) {
-				lowerBound = getUpperBound(typeVariableLowerBound);
+				upperBound = getUpperBound(typeVariableLowerBound);
 			}
 		} else if (TypeKind.WILDCARD.equals(type.getKind())) {
 			WildcardType wildcardVariable = (WildcardType) type;
@@ -194,10 +196,10 @@ public class AptUtils {
 			if (wildcardTypeLowerBound != null
 					&& !typeUtils.isSameType(wildcardTypeLowerBound,
 							objectType.asType())) {
-				lowerBound = getUpperBound(wildcardTypeLowerBound);
+				upperBound = getUpperBound(wildcardTypeLowerBound);
 			}
 		}
-		return lowerBound;
+		return upperBound;
 	}
 
 	public Types getTypeUtils() {
@@ -206,6 +208,10 @@ public class AptUtils {
 
 	public Elements getElementUtils() {
 		return elementUtils;
+	}
+
+	public AptLogger getAptLogger() {
+		return aptLogger;
 	}
 
 	private boolean isTypeElement(TypeMirror type) {
@@ -220,7 +226,7 @@ public class AptUtils {
 	private boolean isEnum(TypeMirror type) {
 		if (isDeclaredType(type)) {
 			DeclaredType declaredType = (DeclaredType) type;
-			return declaredType.asElement().getKind() == ElementKind.ENUM;
+			return ElementKind.ENUM.equals(declaredType.asElement().getKind());
 		}
 		return false;
 	}

@@ -9,19 +9,23 @@ import org.springframework.data.mongodb.processor.shared.ArrayField;
 import org.springframework.data.mongodb.processor.shared.DocumentProcessorConfiguration;
 </#if>
 <#list metaModel.referenceFields as field> 
-<#if ("${field.type.canonicalName}" != "${metaModel.type.canonicalName}" 
-	&& metaModel.addImport(field.type.packageName, field.type.className))>
-import ${field.type.packageName}.${field.type.className};
+<#if (field.type.packageName?? && "${field.type.canonicalName}" != "${metaModel.type.canonicalName}" 
+	&& metaModel.addImport(field.type.canonicalName, field.type.className + 'Field'))>
+import ${field.type.canonicalName}.${field.type.className}Field;
 </#if>
 </#list>
 <#list metaModel.referenceArrayFields as field>
-<#if ("${field.type.canonicalName}" != "${metaModel.type.canonicalName}" 
-	&& metaModel.addImport(field.type.packageName, field.type.className))>
-import ${field.type.packageName}.${field.type.className};
+<#if (field.type.packageName?? && "${field.type.canonicalName}" != "${metaModel.type.canonicalName}" 
+	&& metaModel.addImport(field.type.canonicalName, field.type.className + 'Array'))>
+import ${field.type.canonicalName}.${field.type.className}Array;
 </#if>
 </#list>
 
-
+/**
+ * Meta model of {@link ${metaModel.documentCanonicalName}}.
+ * 
+ * @author {@code DocumentProcessor}
+ */
 public class ${metaModel.type.className} {
  
 	public final String _class = "_class";
@@ -41,6 +45,13 @@ public class ${metaModel.type.className} {
 	public static final ArrayField ${field.fieldName} = new ArrayField("${field.fieldPathName}");
 	</#list>
 
+	/**
+	 * Meta model of {@link ${metaModel.documentCanonicalName}}.
+	 * Represents an instance of subdocument.
+	 * 
+	 * @see ${metaModel.type.canonicalName}
+	 * @author {@code DocumentProcessor}
+	 */
 	public static class ${metaModel.type.className}Field {
 	
 		public final String _path;
@@ -98,7 +109,14 @@ public class ${metaModel.type.className} {
 		}
 		 
 	}
-	 
+	
+	/**
+	 * Meta model of {@link ${metaModel.documentCanonicalName}}.
+	 * Represents an instance of mongodb array of subdocuments.
+	 * 
+	 * @see ${metaModel.type.canonicalName}
+	 * @author {@code DocumentProcessor}
+	 */
 	public static class ${metaModel.type.className}Array extends ${metaModel.type.className}Field {
  
  		public ${metaModel.type.className}Array(String path) {
@@ -122,9 +140,9 @@ public class ${metaModel.type.className} {
 }
 
 <#function fieldType type>
-	<#return metaModel.getTypeReference(type.packageName, type.className) + '.' + type.className + 'Field'>
+	<#return metaModel.getTypeReference(type.canonicalName, type.className + 'Field')>
 </#function>
 
 <#function arrayType type>
-	<#return metaModel.getTypeReference(type.packageName, type.className) + '.' + type.className + 'Array'>
+	<#return metaModel.getTypeReference(type.canonicalName, type.className + 'Array')>
 </#function>

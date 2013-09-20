@@ -1,7 +1,6 @@
 package org.springframework.data.mongodb.processor.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,21 +17,29 @@ public class MetaModel {
 
 	private final Type type;
 
+	private final String documentCanonicalName;
+
 	private final List<Map<String, MetaModelField>> fieldGroups = new ArrayList<Map<String, MetaModelField>>();
 	private final Map<String, MetaModelField> referenceFields = new LinkedHashMap<String, MetaModelField>();
 	private final Map<String, MetaModelField> referenceArrayFields = new LinkedHashMap<String, MetaModelField>();
 	private final Map<String, MetaModelField> primitiveFields = new LinkedHashMap<String, MetaModelField>();
 	private final Map<String, MetaModelField> primitiveArrayFields = new LinkedHashMap<String, MetaModelField>();
 
-	private final Map<String, String> importedTypes = new HashMap<String, String>();
+	private final ImportManager importManager;
 
-	public MetaModel(String canonicalName) {
-		this.type = Type.createFromCanonicalName(canonicalName);
+	public MetaModel(String outputFileName, String documentCanonicalName) {
+		this.documentCanonicalName = documentCanonicalName;
+		type = Type.create(outputFileName);
+		importManager = new ImportManager(type);
 
 		fieldGroups.add(referenceFields);
 		fieldGroups.add(referenceArrayFields);
 		fieldGroups.add(primitiveFields);
 		fieldGroups.add(primitiveArrayFields);
+	}
+
+	public String getDocumentCanonicalName() {
+		return documentCanonicalName;
 	}
 
 	public Type getType() {
@@ -72,29 +79,11 @@ public class MetaModel {
 	}
 
 	public boolean addImport(String pkg, String className) {
-		String canonicalName = toCanonicalName(pkg, className);
-		if (importedTypes.containsKey(className)) {
-			return false;
-		}
-		importedTypes.put(className, canonicalName);
-		return true;
+		return importManager.addImport(pkg, className);
 	}
 
 	public String getTypeReference(String pkg, String className) {
-		String canonicalName = toCanonicalName(pkg, className);
-		if (canonicalName.startsWith(type.getCanonicalName())) {
-			return className;
-		}
-		String importedCanonicalName = importedTypes.get(className);
-		if (importedCanonicalName != null
-				&& importedCanonicalName.equals(canonicalName)) {
-			return className;
-		}
-		return canonicalName;
-	}
-
-	private String toCanonicalName(String pkg, String className) {
-		return (pkg == null) ? className : pkg + "." + className;
+		return importManager.getTypeReference(pkg, className);
 	}
 
 	private void addField(MetaModelField field,

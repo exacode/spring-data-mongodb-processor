@@ -3,6 +3,11 @@ package org.springframework.data.mongodb.processor.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+
+import org.springframework.data.mongodb.processor.AptUtils;
+
 public class Type {
 
 	private final String className;
@@ -13,7 +18,15 @@ public class Type {
 
 	public static Map<String, Type> types = new HashMap<String, Type>();
 
-	public static Type createFromCanonicalName(String canonicalName) {
+	public static Type create(AptUtils aptUtils, TypeMirror typeMirror) {
+		TypeElement typeElement = aptUtils.toTypeElement(typeMirror);
+		String canonicalName = aptUtils.getElementUtils()
+				.getBinaryName(typeElement).toString().replaceAll("\\$", "_")
+				.concat("_");
+		return create(canonicalName);
+	}
+
+	public static Type create(String canonicalName) {
 		Type type = types.get(canonicalName);
 		if (type == null) {
 			type = new Type(canonicalName);

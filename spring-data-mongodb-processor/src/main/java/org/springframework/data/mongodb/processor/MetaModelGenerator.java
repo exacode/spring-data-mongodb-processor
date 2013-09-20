@@ -45,7 +45,8 @@ class MetaModelGenerator {
 		String outputFileName = aptUtils.getElementUtils().getBinaryName(type)
 				.toString();
 		outputFileName = outputFileName.replaceAll("\\$", "_").concat("_");
-		MetaModel metaModel = new MetaModel(outputFileName);
+		String qualifiedName = type.getQualifiedName().toString();
+		MetaModel metaModel = new MetaModel(outputFileName, qualifiedName);
 
 		analyzeSuperclassFields(type.getSuperclass(), metaModel);
 		analyzeFields(type, metaModel);
@@ -93,7 +94,7 @@ class MetaModelGenerator {
 		boolean idField = field.getAnnotation(Id.class) != null;
 		typeMirror = aptUtils.getUpperBound(typeMirror);
 		if (isDocument(typeMirror)) {
-			Type type = getReferenceType(typeMirror);
+			Type type = Type.create(aptUtils, typeMirror);
 			metaModel.addReferenceField(new MetaModelField(fieldName, type,
 					idField));
 		} else {
@@ -108,7 +109,7 @@ class MetaModelGenerator {
 				.getCollectionOrArrayTypeArgument(typeMirror);
 		componentTypeMirror = aptUtils.getUpperBound(componentTypeMirror);
 		if (isDocument(componentTypeMirror)) {
-			Type type = getReferenceType(componentTypeMirror);
+			Type type = Type.create(aptUtils, componentTypeMirror);
 			metaModel
 					.addReferenceArrayField(new MetaModelField(fieldName, type));
 		} else {
@@ -119,14 +120,6 @@ class MetaModelGenerator {
 	private boolean isDocument(TypeMirror typeMirror) {
 		return aptUtils.isDocument(typeMirror)
 				&& modelTypes.contains(aptUtils.toTypeElement(typeMirror));
-	}
-
-	private Type getReferenceType(TypeMirror typeMirror) {
-		TypeElement typeElement = aptUtils.toTypeElement(typeMirror);
-		String canonicalName = aptUtils.getElementUtils()
-				.getBinaryName(typeElement).toString().replaceAll("\\$", "_")
-				.concat("_");
-		return Type.createFromCanonicalName(canonicalName);
 	}
 
 }

@@ -1,5 +1,3 @@
-
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -121,6 +119,14 @@ public class DefaultPackageModel {
 	private DefaultPackageModel[] modelArray;
 
 	private List<DefaultPackageModel> modelList;
+
+	/* Fields of type SubDocument */
+
+	private SubDocument subDocument;
+
+	private SubDocument[] subDocumentArray;
+
+	private List<SubDocument> subDocumentList;
 
 	public Byte getByteWrapperValue() {
 		return byteWrapperValue;
@@ -480,6 +486,30 @@ public class DefaultPackageModel {
 
 	public void setModelList(List<DefaultPackageModel> modelList) {
 		this.modelList = modelList;
+	}
+
+	public SubDocument getSubDocument() {
+		return subDocument;
+	}
+
+	public void setSubDocument(SubDocument subDocument) {
+		this.subDocument = subDocument;
+	}
+
+	public SubDocument[] getSubDocumentArray() {
+		return subDocumentArray;
+	}
+
+	public void setSubDocumentArray(SubDocument[] subDocumentArray) {
+		this.subDocumentArray = subDocumentArray;
+	}
+
+	public List<SubDocument> getSubDocumentList() {
+		return subDocumentList;
+	}
+
+	public void setSubDocumentList(List<SubDocument> subDocumentList) {
+		this.subDocumentList = subDocumentList;
 	}
 
 }
