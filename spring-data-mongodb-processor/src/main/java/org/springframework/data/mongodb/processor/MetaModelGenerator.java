@@ -42,11 +42,11 @@ class MetaModelGenerator {
 	 * @throws IOException
 	 */
 	public MetaModel analyzeType(TypeElement type) {
-		String outputFileName = aptUtils.getElementUtils().getBinaryName(type)
+		String qualifiedMetaModelClassName = aptUtils.getElementUtils().getBinaryName(type)
 				.toString();
-		outputFileName = outputFileName.replaceAll("\\$", "_").concat("_");
-		String qualifiedName = type.getQualifiedName().toString();
-		MetaModel metaModel = new MetaModel(outputFileName, qualifiedName);
+		qualifiedMetaModelClassName = qualifiedMetaModelClassName.replaceAll("\\$", "_").concat("_");
+		String qualifiedDocumentClassName = type.getQualifiedName().toString();
+		MetaModel metaModel = new MetaModel(qualifiedMetaModelClassName, qualifiedDocumentClassName);
 
 		analyzeSuperclassFields(type.getSuperclass(), metaModel);
 		analyzeFields(type, metaModel);

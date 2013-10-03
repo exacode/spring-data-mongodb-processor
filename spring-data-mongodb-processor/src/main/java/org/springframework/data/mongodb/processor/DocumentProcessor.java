@@ -47,7 +47,7 @@ public class DocumentProcessor extends AbstractProcessor {
 				modelTypes);
 		for (TypeElement typeElement : modelTypes) {
 			aptUtils.getAptLogger().note(
-					"Generating metamodel for: "
+					"Generating metamodel for document class: "
 							+ typeElement.asType().toString());
 			MetaModel metaModel = generator.analyzeType(typeElement);
 			writer.write(metaModel);

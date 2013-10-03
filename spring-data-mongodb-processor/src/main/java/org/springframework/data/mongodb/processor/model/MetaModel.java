@@ -17,7 +17,7 @@ public class MetaModel {
 
 	private final Type type;
 
-	private final String documentCanonicalName;
+	private final String qualifiedDocumentClassName;
 
 	private final List<Map<String, MetaModelField>> fieldGroups = new ArrayList<Map<String, MetaModelField>>();
 	private final Map<String, MetaModelField> referenceFields = new LinkedHashMap<String, MetaModelField>();
@@ -27,9 +27,10 @@ public class MetaModel {
 
 	private final ImportManager importManager;
 
-	public MetaModel(String outputFileName, String documentCanonicalName) {
-		this.documentCanonicalName = documentCanonicalName;
-		type = Type.create(outputFileName);
+	public MetaModel(String qualifiedMetaModelClassName,
+			String qualifiedDocumentClassName) {
+		this.qualifiedDocumentClassName = qualifiedDocumentClassName;
+		type = Type.create(qualifiedMetaModelClassName);
 		importManager = new ImportManager(type);
 
 		fieldGroups.add(referenceFields);
@@ -38,8 +39,8 @@ public class MetaModel {
 		fieldGroups.add(primitiveArrayFields);
 	}
 
-	public String getDocumentCanonicalName() {
-		return documentCanonicalName;
+	public String getQualifiedDocumentClassName() {
+		return qualifiedDocumentClassName;
 	}
 
 	public Type getType() {

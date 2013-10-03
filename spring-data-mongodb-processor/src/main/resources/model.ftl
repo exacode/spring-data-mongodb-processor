@@ -22,7 +22,7 @@ import ${field.type.canonicalName}.${field.type.className}Array;
 </#list>
 
 /**
- * Meta model of {@link ${metaModel.documentCanonicalName}}.
+ * Meta model of {@link ${metaModel.qualifiedDocumentClassName}}.
  * 
  * @author {@code DocumentProcessor}
  */
@@ -46,7 +46,7 @@ public class ${metaModel.type.className} {
 	</#list>
 
 	/**
-	 * Meta model of {@link ${metaModel.documentCanonicalName}}.
+	 * Meta model of {@link ${metaModel.qualifiedDocumentClassName}}.
 	 * Represents an instance of subdocument.
 	 * 
 	 * @see ${metaModel.type.canonicalName}
@@ -111,7 +111,7 @@ public class ${metaModel.type.className} {
 	}
 	
 	/**
-	 * Meta model of {@link ${metaModel.documentCanonicalName}}.
+	 * Meta model of {@link ${metaModel.qualifiedDocumentClassName}}.
 	 * Represents an instance of mongodb array of subdocuments.
 	 * 
 	 * @see ${metaModel.type.canonicalName}
