@@ -4,7 +4,7 @@
 	<groupId>net.exacode.spring.data</groupId>
 	<artifactId>spring-data-mongodb-processor-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.6-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 
 	<name>Spring Data MongoDB - Metamodel processor parent project</name>
 	<description>Parent project of Spring Data meta model processor for MongoDB documents</description>
@@ -21,9 +21,9 @@
 	</distributionManagement> 
 
 	<scm>
-		<connection>scm:git:git@github.com:exacode/spring-logging.git</connection>
-		<developerConnection>scm:git:git@github.com:exacode/spring-logging.git</developerConnection>
-		<url>http://github.com/exacode/spring-logging</url>
+		<connection>scm:git:git@github.com:exacode/spring-data-mongodb-processor.git</connection>
+		<developerConnection>scm:git:git@github.com:exacode/spring-data-mongodb-processor.git</developerConnection>
+		<url>http://github.com/exacode/spring-data-mongodb-processor</url>
 	</scm>
 
 	<properties>
