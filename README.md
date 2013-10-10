@@ -41,19 +41,6 @@ Using this annotation processor and [spring-data-mongodb](http://www.springsourc
 		// Instead of: Criteria.where("user.settings.5");
 
 
-Maven repository
-----------------
-
-In order to use this library add [repository](http://github.com/mendlik/mvn-repo) location in your `pom.xml`:
-
-		<repositories>
-		    <repository>
-		        <id>mendlik-releases</id>
-		        <url>https://github.com/mendlik/mvn-repo/raw/master/releases</url>
-		    </repository>
-		</repositories>
-
-
 Why QueryDSL for MongoDB is not sufficient? 
 -------------------------------------------
 - QueryDSL can be used only in queries. What about updating and deleting data?
@@ -65,14 +52,73 @@ Why QueryDSL for MongoDB is not sufficient?
 Maybe some of these arguments come from my lack of knowledge. Maybe I didn't study the documentation as hard as I should. If I am wrong please correct me.
 
 
+Maven dependency
+----------------
+
+In order to use this library add [repository](http://github.com/exacode/mvn-repo) location into your `pom.xml` 
+and add appropriate dependencies and build plugin.
+
+		</dependencies>
+			<dependency>
+				<groupId>net.exacode.spring.data</groupId>
+				<artifactId>spring-data-mongodb-processor-shared</artifactId>
+				<version>${version.spring-data-mongodb-processor}</version>
+			</dependency>
+		</dependencies>
+
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.7</version>
+					<executions>
+						<execution>
+							<id>add-test-source</id>
+							<phase>generate-test-sources</phase>
+							<goals>
+								<goal>add-test-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>${project.build.directory}/generated-sources/apt</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin> 
+					<groupId>org.bsc.maven</groupId>
+					<artifactId>maven-processor-plugin</artifactId>
+					<version>2.2.4</version>
+					<executions>
+						<execution>
+							<id>process</id>
+							<goals>
+								<goal>process</goal>
+							</goals>
+							<phase>generate-sources</phase>
+							<configuration>
+								<processors>
+									<processor>net.exacode.spring.data.mongodb.processor.DocumentProcessor</processor>
+								</processors>
+							</configuration>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>net.exacode.spring.data</groupId>
+							<artifactId>spring-data-mongodb-processor</artifactId>
+							<version>${version.spring-data-mongodb-processor}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</build>
+
 Spring feature
 --------------
 This annotation processor is proposed as feature on [Springsource Jira](https://jira.springsource.org/browse/DATAMONGO-744). 
 Please vote it up!
 
-Donation
---------
-I hope you found here something useful and/or interesting.
-Help keep this repository growing in more and better projects. 
-
-<a href='http://www.pledgie.com/campaigns/22261'><img alt='Click here to lend your support to: mendlik-open-repository and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/22261.png?skin_name=chrome' border='0' /></a>
+<a href='http://www.pledgie.com/campaigns/22342'><img alt='Click here to lend your support to: Exacode open projects and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/22342.png?skin_name=chrome' border='0' /></a>
