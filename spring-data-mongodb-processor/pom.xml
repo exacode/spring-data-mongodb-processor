@@ -7,7 +7,7 @@
 	<description>Spring Data meta model processor for MongoDB documents</description>
 
 	<parent>
-		<groupId>org.springframework.data</groupId>
+		<groupId>net.exacode.spring.data</groupId>
 		<artifactId>spring-data-mongodb-processor-parent</artifactId>
 		<version>0.0.6-SNAPSHOT</version>
 	</parent>

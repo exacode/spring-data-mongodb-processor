@@ -1,0 +1,72 @@
+package net.exacode.spring.data.mongodb.processor;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+
+import net.exacode.spring.data.mongodb.processor.model.MetaModel;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+/**
+ * Processor that generates meta model for MongoDB documents.
+ * <p>
+ * Uses {@link Document} annotation to determine the root of the MongoDB
+ * document.
+ * 
+ * @author mendlik
+ */
+public class DocumentProcessor extends AbstractProcessor {
+
+	@Override
+	public boolean process(Set<? extends TypeElement> annotations,
+			RoundEnvironment roundEnv) {
+
+		if (roundEnv.processingOver()) {
+			// We're not interested in the postprocessing round.
+			return false;
+		}
+
+		// Find unique types that needs meta model
+		AptUtils aptUtils = new AptUtils(processingEnv);
+		ModelTypeChooser typeChooser = new ModelTypeChooser(aptUtils);
+		Set<TypeElement> modelTypes = new HashSet<TypeElement>();
+		for (TypeElement te : annotations) {
+			for (Element element : roundEnv.getElementsAnnotatedWith(te)) {
+				typeChooser.getDocumentTypes(element.asType(), modelTypes);
+			}
+		}
+
+		// Create meta model for appropriate types
+		MetaModelWriter writer = new MetaModelWriter(processingEnv);
+		MetaModelGenerator generator = new MetaModelGenerator(aptUtils,
+				modelTypes);
+		for (TypeElement typeElement : modelTypes) {
+			aptUtils.getAptLogger().note(
+					"Generating metamodel for document class: "
+							+ typeElement.asType().toString());
+			MetaModel metaModel = generator.analyzeType(typeElement);
+			writer.write(metaModel);
+		}
+
+		return true;
+	}
+
+	@Override
+	public Set<String> getSupportedAnnotationTypes() {
+		Set<String> supportedTypes = new HashSet<String>();
+		supportedTypes.add(Document.class.getCanonicalName());
+		return supportedTypes;
+	}
+
+	@Override
+	public SourceVersion getSupportedSourceVersion() {
+		return SourceVersion.latestSupported();
+	}
+
+}

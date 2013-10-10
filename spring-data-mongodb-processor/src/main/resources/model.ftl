@@ -2,11 +2,11 @@
 
 <#if metaModel.primitiveArrayFields?size gt 0>
 <#assign imported=metaModel.addImport('org.springframework.data.mongodb.processor.shared', 'ArrayField')/>
-import org.springframework.data.mongodb.processor.shared.ArrayField;
+import net.exacode.spring.data.mongodb.processor.shared.ArrayField;
 </#if>
 <#if (metaModel.referenceFields?has_content || metaModel.referenceArrayFields?has_content)>
 <#assign imported=metaModel.addImport('org.springframework.data.mongodb.processor.shared', 'DocumentProcessorConfiguration')/>
-import org.springframework.data.mongodb.processor.shared.DocumentProcessorConfiguration;
+import net.exacode.spring.data.mongodb.processor.shared.DocumentProcessorConfiguration;
 </#if>
 <#list metaModel.referenceFields as field> 
 <#if (field.type.packageName?? && "${field.type.canonicalName}" != "${metaModel.type.canonicalName}" 
