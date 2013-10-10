@@ -21,9 +21,12 @@
 	</distributionManagement> 
 
 	<scm>
-		<connection>scm:git:git@github.com:exacode/spring-logging.git</connection>
-		<developerConnection>scm:git:git@github.com:exacode/spring-logging.git</developerConnection>
-		<url>http://github.com/exacode/spring-logging</url>
+		<connection>scm:git:git@github.com:exacode/spring-data-mongodb-processor
+.git</connection>
+		<developerConnection>scm:git:git@github.com:exacode/spring-data-mongodb-processor
+.git</developerConnection>
+		<url>http://github.com/exacode/spring-data-mongodb-processor
+</url>
 	</scm>
 
 	<properties>
