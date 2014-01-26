@@ -155,6 +155,15 @@ public class AptUtils {
 		return null;
 	}
 
+	public String canonicalNameFromBinaryName(String binaryName) {
+		String canonicalName = binaryName.replaceAll("\\$", "_").concat("_");
+		// Workaround for SecurityException: "Prohibited package"
+		if (canonicalName.startsWith("java")) {
+			canonicalName = "apt." + canonicalName;
+		}
+		return canonicalName;
+	}
+
 	public TypeMirror getCollectionOrArrayTypeArgument(TypeMirror typeMirror) {
 		if (isCollection(typeMirror)) {
 			return getCollectionOrArrayTypeArgument(getCollectionTypeArgument(typeMirror));

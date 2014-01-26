@@ -130,7 +130,15 @@ public class Model {
 
 	private List<SubDocument> subDocumentList;
 
-	public Byte getByteWrapperValue() {
+	/* Fields of type Object */
+
+	private Object objectValue;
+
+	private Object[] objectArray;
+
+	private List<Object> objectList;
+
+	public Object getByteWrapperValue() {
 		return byteWrapperValue;
 	}
 
@@ -512,6 +520,30 @@ public class Model {
 
 	public void setSubDocumentList(List<SubDocument> subDocumentList) {
 		this.subDocumentList = subDocumentList;
+	}
+
+	public Object getObjectValue() {
+		return objectValue;
+	}
+
+	public void setObjectValue(Object objectValue) {
+		this.objectValue = objectValue;
+	}
+
+	public Object[] getObjectArray() {
+		return objectArray;
+	}
+
+	public void setObjectArray(Object[] objectArray) {
+		this.objectArray = objectArray;
+	}
+
+	public List<Object> getObjectList() {
+		return objectList;
+	}
+
+	public void setObjectList(List<Object> objectList) {
+		this.objectList = objectList;
 	}
 
 }

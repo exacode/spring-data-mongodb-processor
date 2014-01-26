@@ -20,9 +20,9 @@ public class Type {
 
 	public static Type create(AptUtils aptUtils, TypeMirror typeMirror) {
 		TypeElement typeElement = aptUtils.toTypeElement(typeMirror);
-		String canonicalName = aptUtils.getElementUtils()
-				.getBinaryName(typeElement).toString().replaceAll("\\$", "_")
-				.concat("_");
+		String binaryName = aptUtils.getElementUtils()
+				.getBinaryName(typeElement).toString();
+		String canonicalName = aptUtils.canonicalNameFromBinaryName(binaryName);
 		return create(canonicalName);
 	}
 

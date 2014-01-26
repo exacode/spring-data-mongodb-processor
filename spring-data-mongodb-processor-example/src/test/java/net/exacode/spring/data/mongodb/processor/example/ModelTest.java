@@ -33,6 +33,8 @@ public class ModelTest {
 		Assertions.assertThat(Model_.modelValue._path).isEqualTo("modelValue");
 		Assertions.assertThat(Model_.subDocument._path)
 				.isEqualTo("subDocument");
+		Assertions.assertThat(Model_.objectValue._path)
+				.isEqualTo("objectValue");
 	}
 
 	@Test
@@ -66,6 +68,8 @@ public class ModelTest {
 		Assertions.assertThat(Model_.modelArray._path).isEqualTo("modelArray");
 		Assertions.assertThat(Model_.subDocumentArray._path).isEqualTo(
 				"subDocumentArray");
+		Assertions.assertThat(Model_.objectArray._path)
+				.isEqualTo("objectArray");
 	}
 
 	@Test
@@ -105,6 +109,8 @@ public class ModelTest {
 				"modelArray.5");
 		Assertions.assertThat(Model_.subDocumentArray.index(5)._path)
 				.isEqualTo("subDocumentArray.5");
+		Assertions.assertThat(Model_.objectArray.index(5)._path).isEqualTo(
+				"objectArray.5");
 	}
 
 	@Test
@@ -129,6 +135,8 @@ public class ModelTest {
 				"modelList.5");
 		Assertions.assertThat(Model_.subDocumentList.index(5)._path).isEqualTo(
 				"subDocumentList.5");
+		Assertions.assertThat(Model_.objectList.index(5)._path).isEqualTo(
+				"objectList.5");
 	}
 
 	@Test
@@ -148,6 +156,7 @@ public class ModelTest {
 		Assertions.assertThat(Model_.modelList._path).isEqualTo("modelList");
 		Assertions.assertThat(Model_.subDocumentList._path).isEqualTo(
 				"subDocumentList");
+		Assertions.assertThat(Model_.objectList._path).isEqualTo("objectList");
 	}
 
 	@Test
