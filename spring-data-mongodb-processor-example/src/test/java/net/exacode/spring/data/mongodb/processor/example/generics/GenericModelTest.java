@@ -9,7 +9,7 @@ public class GenericModelTest {
 		Assertions.assertThat(GenericModel_.subDocument).isInstanceOf(
 				SubDocument_.SubDocument_Field.class);
 		Assertions.assertThat(GenericModel_.subDocument.id).isEqualTo(
-				"subDocument.id");
+				"subDocument._id");
 	}
 
 	@Test
@@ -17,7 +17,7 @@ public class GenericModelTest {
 		Assertions.assertThat(GenericModel_.subDocumentArray).isInstanceOf(
 				SubDocument_.SubDocument_Array.class);
 		Assertions.assertThat(GenericModel_.subDocumentArray.id).isEqualTo(
-				"subDocumentArray.id");
+				"subDocumentArray._id");
 	}
 
 	@Test
@@ -25,6 +25,6 @@ public class GenericModelTest {
 		Assertions.assertThat(GenericModel_.subDocumentList).isInstanceOf(
 				SubDocument_.SubDocument_Array.class);
 		Assertions.assertThat(GenericModel_.subDocumentList.id).isEqualTo(
-				"subDocumentList.id");
+				"subDocumentList._id");
 	}
 }

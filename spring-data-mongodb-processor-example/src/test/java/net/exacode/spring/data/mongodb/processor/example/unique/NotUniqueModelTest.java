@@ -9,6 +9,6 @@ public class NotUniqueModelTest {
 		Assertions.assertThat(NotUniqueModel_.notUniqueA.size).isEqualTo(
 				"notUniqueA.size");
 		Assertions.assertThat(NotUniqueModel_.notUniqueB.id).isEqualTo(
-				"notUniqueB.id");
+				"notUniqueB._id");
 	}
 }

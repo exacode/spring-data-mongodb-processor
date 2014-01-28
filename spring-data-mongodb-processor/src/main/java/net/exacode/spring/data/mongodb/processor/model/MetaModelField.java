@@ -33,7 +33,7 @@ public class MetaModelField {
 	}
 
 	public String getFieldPathName() {
-		return idField ? "_id" : fieldName;
+		return idField || fieldName.equals("id") ? "_id" : fieldName;
 	}
 
 	public Type getType() {
