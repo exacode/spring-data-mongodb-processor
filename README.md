@@ -1,6 +1,9 @@
 Annotation processor for models annotated with `@Document`
 =========================================================
 
+[![Flattr this!](https://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=exacode&url=https://github.com/exacode/spring-data-mongodb-processor&tags=spring,spring-data,mongodb,java,code,github&category=software) 
+[![Build Status](https://travis-ci.org/exacode/spring-data-mongodb-processor.png?branch=master)](https://travis-ci.org/exacode/spring-data-mongodb-processor)
+
 An annotation processor for [spring-data-mongodb](http://www.springsource.org/spring-data/mongodb) document classes. 
 
 

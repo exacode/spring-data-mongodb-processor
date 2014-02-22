@@ -20,11 +20,12 @@ import ${field.type.canonicalName}.${field.type.className}Field;
 import ${field.type.canonicalName}.${field.type.className}Array;
 </#if>
 </#list>
+<#assign author="spring-data-mongodb-processor" />
 
 /**
- * Meta model of {@link ${metaModel.qualifiedDocumentClassName}}.
+ * Spring Data MongoDB meta model of {@link ${metaModel.qualifiedDocumentClassName}}.
  * 
- * @author {@code DocumentProcessor}
+ * @author ${author}
  */
 public class ${metaModel.type.className} {
  
@@ -50,7 +51,7 @@ public class ${metaModel.type.className} {
 	 * Represents an instance of subdocument.
 	 * 
 	 * @see ${metaModel.type.canonicalName}
-	 * @author {@code DocumentProcessor}
+	 * @author ${author}
 	 */
 	public static class ${metaModel.type.className}Field {
 	
@@ -115,7 +116,7 @@ public class ${metaModel.type.className} {
 	 * Represents an instance of mongodb array of subdocuments.
 	 * 
 	 * @see ${metaModel.type.canonicalName}
-	 * @author {@code DocumentProcessor}
+	 * @author ${author}
 	 */
 	public static class ${metaModel.type.className}Array extends ${metaModel.type.className}Field {
  
