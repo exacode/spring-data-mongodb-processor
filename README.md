@@ -123,5 +123,3 @@ Spring feature
 --------------
 This annotation processor is proposed as feature on [Springsource Jira](https://jira.springsource.org/browse/DATAMONGO-744). 
 Please vote it up!
-
-<a href='http://www.pledgie.com/campaigns/22342'><img alt='Click here to lend your support to: Exacode open projects and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/22342.png?skin_name=chrome' border='0' /></a>
