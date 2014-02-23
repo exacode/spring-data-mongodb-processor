@@ -30,7 +30,7 @@ public class MetaModelWriter {
 
 	private final Configuration templateConfiguration;
 
-	private static final String META_MODEL_TEMPLATE = "model.ftl";
+	private static final String META_MODEL_TEMPLATE = "SpringDataMongoDbMetaModel.ftl";
 
 	public MetaModelWriter(ProcessingEnvironment processingEnv) {
 		this.processingEnv = processingEnv;
