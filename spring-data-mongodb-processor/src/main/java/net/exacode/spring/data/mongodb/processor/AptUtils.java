@@ -35,7 +35,7 @@ public class AptUtils {
 	private final AptLogger aptLogger;
 
 	public AptUtils(ProcessingEnvironment processingEnv) {
-		this.aptLogger = new AptLogger(processingEnv);
+		this.aptLogger = AptLogger.nullLogger();
 		this.elementUtils = processingEnv.getElementUtils();
 		this.typeUtils = processingEnv.getTypeUtils();
 		this.collectionType = elementUtils

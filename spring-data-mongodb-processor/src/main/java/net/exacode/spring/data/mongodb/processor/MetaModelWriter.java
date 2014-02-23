@@ -11,7 +11,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.Diagnostic.Kind;
 
 import net.exacode.spring.data.mongodb.processor.model.MetaModel;
-
+import freemarker.log.Logger;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -38,6 +38,12 @@ public class MetaModelWriter {
 		this.templateConfiguration = new Configuration();
 		this.templateConfiguration.setClassForTemplateLoading(this.getClass(),
 				"/");
+		try {
+			// Turn off freemarker logs
+			Logger.selectLoggerLibrary(Logger.LIBRARY_NONE);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void write(MetaModel metaModel) {
