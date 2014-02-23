@@ -18,12 +18,22 @@ How to configure?
 -----------------
 
 ### Maven
-First invoke *spring-data-annotation-processor* during maven build. In order to do this have a look at an example project: [spring-data-mongodb-processor-example](https://github.com/mendlik/spring-data-mongodb-processor/blob/master/spring-data-mongodb-processor-example/pom.xml#L62).
 
-### Eclipse IDE
-To ease the usage of annotation processor use Eclipse IDE with m2e eclipse plugin and configure it to invoke annotation processor automatically:
-* Right-click on your project > Properties > Maven > Annotation processing
-* Select the Annotation Processing strategy: *Delegate Annotation Processing to maven plugins*. 
+Take a look on an [example project](https://github.com/mendlik/spring-data-mongodb-processor/blob/master/spring-data-mongodb-processor-example/pom.xml#L61).
+
+In order to use this processor add [repository](http://github.com/exacode/mvn-repo) location into your `pom.xml` 
+and add appropriate dependency.
+
+		</dependencies>
+			<dependency>
+				<groupId>net.exacode.spring.data</groupId>
+				<artifactId>spring-data-mongodb-processor</artifactId>
+				<version>${spring-data-mongodb-processor.version}</version>
+			</dependency>
+		</dependencies>
+
+
+Although there is also a [second configuration option](https://github.com/mendlik/spring-data-mongodb-processor/blob/master/spring-data-mongodb-processor-example/pom2.xml#L89), the first one is more IDE friendly.
 
 
 Usage example
@@ -53,73 +63,3 @@ Why QueryDSL for MongoDB is not sufficient?
 - QueryDSL have some minor problems with querying arrays of nested documents in QueryDSL. For example it's impossible to create such a query: `db.inventory.find( { 'memos.0.by': 'shipping' } )` (see MongoDB doc: [match-a-field-in-the-subdocument-using-the-array-index](http://docs.mongodb.org/manual/tutorial/query-documents/#match-a-field-in-the-subdocument-using-the-array-index))
 
 Maybe some of these arguments come from my lack of knowledge. Maybe I didn't study the documentation as hard as I should. If I am wrong please correct me.
-
-
-Maven dependency
-----------------
-
-In order to use this library add [repository](http://github.com/exacode/mvn-repo) location into your `pom.xml` 
-and add appropriate dependencies and build plugin.
-
-		</dependencies>
-			<dependency>
-				<groupId>net.exacode.spring.data</groupId>
-				<artifactId>spring-data-mongodb-processor-shared</artifactId>
-				<version>${version.spring-data-mongodb-processor}</version>
-			</dependency>
-		</dependencies>
-
-		<build>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.7</version>
-					<executions>
-						<execution>
-							<id>add-test-source</id>
-							<phase>generate-test-sources</phase>
-							<goals>
-								<goal>add-test-source</goal>
-							</goals>
-							<configuration>
-								<sources>
-									<source>${project.build.directory}/generated-sources/apt</source>
-								</sources>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin> 
-					<groupId>org.bsc.maven</groupId>
-					<artifactId>maven-processor-plugin</artifactId>
-					<version>2.2.4</version>
-					<executions>
-						<execution>
-							<id>process</id>
-							<goals>
-								<goal>process</goal>
-							</goals>
-							<phase>generate-sources</phase>
-							<configuration>
-								<processors>
-									<processor>net.exacode.spring.data.mongodb.processor.DocumentProcessor</processor>
-								</processors>
-							</configuration>
-						</execution>
-					</executions>
-					<dependencies>
-						<dependency>
-							<groupId>net.exacode.spring.data</groupId>
-							<artifactId>spring-data-mongodb-processor</artifactId>
-							<version>${version.spring-data-mongodb-processor}</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-			</plugins>
-		</build>
-
-Spring feature
---------------
-This annotation processor is proposed as feature on [Springsource Jira](https://jira.springsource.org/browse/DATAMONGO-744). 
-Please vote it up!
