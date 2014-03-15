@@ -26,7 +26,7 @@ and add appropriate dependency.
 
 		</dependencies>
 			<dependency>
-				<groupId>net.exacode.spring.data</groupId>
+				<groupId>net.exacode.spring.data.mongodb</groupId>
 				<artifactId>spring-data-mongodb-processor</artifactId>
 				<version>${spring-data-mongodb-processor.version}</version>
 			</dependency>
