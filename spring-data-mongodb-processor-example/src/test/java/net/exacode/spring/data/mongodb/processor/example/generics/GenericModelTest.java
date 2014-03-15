@@ -1,30 +1,30 @@
 package net.exacode.spring.data.mongodb.processor.example.generics;
 
-import org.fest.assertions.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 
 public class GenericModelTest {
 	@Test
 	public void shouldCreateFieldWithUpperBoundType() {
-		Assertions.assertThat(GenericModel_.subDocument).isInstanceOf(
+		assertThat(GenericModel_.subDocument).isInstanceOf(
 				SubDocument_.SubDocument_Field.class);
-		Assertions.assertThat(GenericModel_.subDocument.id).isEqualTo(
-				"subDocument._id");
+		assertThat(GenericModel_.subDocument.id).isEqualTo("subDocument._id");
 	}
 
 	@Test
 	public void shouldCreateArrayFieldWithUpperBoundType() {
-		Assertions.assertThat(GenericModel_.subDocumentArray).isInstanceOf(
+		assertThat(GenericModel_.subDocumentArray).isInstanceOf(
 				SubDocument_.SubDocument_Array.class);
-		Assertions.assertThat(GenericModel_.subDocumentArray.id).isEqualTo(
+		assertThat(GenericModel_.subDocumentArray.id).isEqualTo(
 				"subDocumentArray._id");
 	}
 
 	@Test
 	public void shouldCreateListFieldWithUpperBoundType() {
-		Assertions.assertThat(GenericModel_.subDocumentList).isInstanceOf(
+		assertThat(GenericModel_.subDocumentList).isInstanceOf(
 				SubDocument_.SubDocument_Array.class);
-		Assertions.assertThat(GenericModel_.subDocumentList.id).isEqualTo(
+		assertThat(GenericModel_.subDocumentList.id).isEqualTo(
 				"subDocumentList._id");
 	}
 }

@@ -10,6 +10,8 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
+import net.exacode.spring.data.mongodb.processor.shared.MetaModelExclude;
+
 /**
  * Determines which types need a dedicated meta model.
  * 
@@ -69,8 +71,11 @@ public class ModelTypeChooser {
 	}
 
 	private boolean isPersistableField(VariableElement field) {
+		MetaModelExclude metaModelExclude = field
+				.getAnnotation(MetaModelExclude.class);
 		Set<Modifier> fieldModifiers = field.getModifiers();
-		boolean persistable = !fieldModifiers.contains(Modifier.STATIC);
+		boolean persistable = metaModelExclude == null;
+		persistable = persistable && !fieldModifiers.contains(Modifier.STATIC);
 		persistable = persistable
 				&& !fieldModifiers.contains(Modifier.TRANSIENT);
 		return persistable;

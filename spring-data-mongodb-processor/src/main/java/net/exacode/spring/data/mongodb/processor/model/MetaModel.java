@@ -19,6 +19,8 @@ public class MetaModel {
 
 	private final String qualifiedDocumentClassName;
 
+	private final String prefix;
+
 	private final List<Map<String, MetaModelField>> fieldGroups = new ArrayList<Map<String, MetaModelField>>();
 	private final Map<String, MetaModelField> referenceFields = new LinkedHashMap<String, MetaModelField>();
 	private final Map<String, MetaModelField> referenceArrayFields = new LinkedHashMap<String, MetaModelField>();
@@ -28,15 +30,20 @@ public class MetaModel {
 	private final ImportManager importManager;
 
 	public MetaModel(String qualifiedMetaModelClassName,
-			String qualifiedDocumentClassName) {
+			String qualifiedDocumentClassName, String prefix) {
 		this.qualifiedDocumentClassName = qualifiedDocumentClassName;
-		type = Type.create(qualifiedMetaModelClassName);
-		importManager = new ImportManager(type);
+		this.type = Type.create(qualifiedMetaModelClassName);
+		this.importManager = new ImportManager(type);
+		this.prefix = (prefix != null) ? prefix + "." : "";
 
 		fieldGroups.add(referenceFields);
 		fieldGroups.add(referenceArrayFields);
 		fieldGroups.add(primitiveFields);
 		fieldGroups.add(primitiveArrayFields);
+	}
+
+	public String getPrefix() {
+		return prefix;
 	}
 
 	public String getQualifiedDocumentClassName() {

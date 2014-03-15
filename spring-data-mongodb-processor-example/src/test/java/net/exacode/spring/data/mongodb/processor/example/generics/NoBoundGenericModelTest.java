@@ -1,32 +1,31 @@
 package net.exacode.spring.data.mongodb.processor.example.generics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import net.exacode.spring.data.mongodb.processor.shared.ArrayField;
 
-import org.fest.assertions.api.Assertions;
 import org.junit.Test;
 
 public class NoBoundGenericModelTest {
 	@Test
 	public void shouldCreateField() {
-		Assertions.assertThat(NoBoundsGenericModel_.subDocument).isInstanceOf(
-				String.class);
-		Assertions.assertThat(NoBoundsGenericModel_.subDocument).isEqualTo(
-				"subDocument");
+		assertThat(NoBoundsGenericModel_.subDocument)
+				.isInstanceOf(String.class);
+		assertThat(NoBoundsGenericModel_.subDocument).isEqualTo("subDocument");
 	}
 
 	@Test
 	public void shouldCreateArrayField() {
-		Assertions.assertThat(NoBoundsGenericModel_.subDocumentArray)
-				.isInstanceOf(ArrayField.class);
-		Assertions.assertThat(NoBoundsGenericModel_.subDocumentArray._path)
-				.isEqualTo("subDocumentArray");
+		assertThat(NoBoundsGenericModel_.subDocumentArray).isInstanceOf(
+				ArrayField.class);
+		assertThat(NoBoundsGenericModel_.subDocumentArray._path).isEqualTo(
+				"subDocumentArray");
 	}
 
 	@Test
 	public void shouldCreateListField() {
-		Assertions.assertThat(NoBoundsGenericModel_.subDocumentList)
-				.isInstanceOf(ArrayField.class);
-		Assertions.assertThat(NoBoundsGenericModel_.subDocumentList._path)
-				.isEqualTo("subDocumentList");
+		assertThat(NoBoundsGenericModel_.subDocumentList).isInstanceOf(
+				ArrayField.class);
+		assertThat(NoBoundsGenericModel_.subDocumentList._path).isEqualTo(
+				"subDocumentList");
 	}
 }

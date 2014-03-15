@@ -1,21 +1,22 @@
 package net.exacode.spring.data.mongodb.processor.example.inheritance;
 
-import org.fest.assertions.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 
 public class ModelChildTest {
 	@Test
 	public void sholudHaveChildField() {
-		Assertions.assertThat(ModelChild_.childField).isEqualTo("childField");
+		assertThat(ModelChild_.childField).isEqualTo("childField");
 	}
 
 	@Test
 	public void sholudHaveCommonField() {
-		Assertions.assertThat(ModelChild_.commonField).isEqualTo("commonField");
+		assertThat(ModelChild_.commonField).isEqualTo("commonField");
 	}
 
 	@Test
 	public void sholudHaveParentField() {
-		Assertions.assertThat(ModelChild_.parentField).isEqualTo("parentField");
+		assertThat(ModelChild_.parentField).isEqualTo("parentField");
 	}
 }

@@ -14,6 +14,7 @@ import javax.lang.model.util.ElementFilter;
 import net.exacode.spring.data.mongodb.processor.model.MetaModel;
 import net.exacode.spring.data.mongodb.processor.model.MetaModelField;
 import net.exacode.spring.data.mongodb.processor.model.Type;
+import net.exacode.spring.data.mongodb.processor.shared.MetaModelExclude;
 
 import org.springframework.data.annotation.Id;
 
@@ -43,18 +44,31 @@ class MetaModelGenerator {
 	 * @throws IOException
 	 */
 	public MetaModel analyzeType(TypeElement type) {
-		String qualifiedMetaModelClassName = aptUtils.getElementUtils()
-				.getBinaryName(type).toString();
-		qualifiedMetaModelClassName = aptUtils
-				.canonicalNameFromBinaryName(qualifiedMetaModelClassName);
+		String qualifiedMetaModelClassName = getMetaModelCanonicalName(type);
 		String qualifiedDocumentClassName = type.getQualifiedName().toString();
+		String prefix = getPrefix(type);
 		MetaModel metaModel = new MetaModel(qualifiedMetaModelClassName,
-				qualifiedDocumentClassName);
+				qualifiedDocumentClassName, prefix);
 
 		analyzeSuperclassFields(type.getSuperclass(), metaModel);
 		analyzeFields(type, metaModel);
 
 		return metaModel;
+	}
+
+	private String getPrefix(TypeElement type) {
+		net.exacode.spring.data.mongodb.processor.shared.MetaModel metaModel = type
+				.getAnnotation(net.exacode.spring.data.mongodb.processor.shared.MetaModel.class);
+		if (metaModel != null && !metaModel.prefix().isEmpty()) {
+			return metaModel.prefix();
+		}
+		return null;
+	}
+
+	private String getMetaModelCanonicalName(TypeElement type) {
+		String name = aptUtils.getElementUtils().getBinaryName(type).toString();
+		name = aptUtils.canonicalNameFromBinaryName(name);
+		return name;
 	}
 
 	private void analyzeFields(TypeElement typeElement, MetaModel metaModel) {
@@ -84,6 +98,16 @@ class MetaModelGenerator {
 		}
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror typeMirror = field.asType();
+
+		MetaModelExclude metaModelExclude = field
+				.getAnnotation(MetaModelExclude.class);
+		if (metaModelExclude != null) {
+			if (metaModelExclude.pathOnly()) {
+				analyzeSingleField(field, metaModel, fieldName, null);
+			}
+			return;
+		}
+
 		if (aptUtils.isCollection(typeMirror)
 				|| typeMirror.getKind() == TypeKind.ARRAY) {
 			analyzeArrayField(metaModel, fieldName, typeMirror);
@@ -96,7 +120,7 @@ class MetaModelGenerator {
 			String fieldName, TypeMirror typeMirror) {
 		boolean idField = field.getAnnotation(Id.class) != null;
 		typeMirror = aptUtils.getUpperBound(typeMirror);
-		if (isDocument(typeMirror)) {
+		if (typeMirror != null && isDocument(typeMirror)) {
 			Type type = Type.create(aptUtils, typeMirror);
 			metaModel.addReferenceField(new MetaModelField(fieldName, type,
 					idField));

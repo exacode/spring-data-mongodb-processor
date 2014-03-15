@@ -1,212 +1,194 @@
-import org.fest.assertions.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class DefaultPackageModelTest {
 
 	@Test
 	public void sholudHaveSingleFields() {
-		Assertions.assertThat(DefaultPackageModel_.byteValue).isEqualTo(
-				"byteValue");
-		Assertions.assertThat(DefaultPackageModel_.shortValue).isEqualTo(
-				"shortValue");
-		Assertions.assertThat(DefaultPackageModel_.intValue).isEqualTo(
-				"intValue");
-		Assertions.assertThat(DefaultPackageModel_.longValue).isEqualTo(
-				"longValue");
-		Assertions.assertThat(DefaultPackageModel_.floatValue).isEqualTo(
-				"floatValue");
-		Assertions.assertThat(DefaultPackageModel_.doubleValue).isEqualTo(
-				"doubleValue");
-		Assertions.assertThat(DefaultPackageModel_.dateValue).isEqualTo(
-				"dateValue");
-		Assertions.assertThat(DefaultPackageModel_.dateTimeValue).isEqualTo(
+		assertThat(DefaultPackageModel_.byteValue).isEqualTo("byteValue");
+		assertThat(DefaultPackageModel_.shortValue).isEqualTo("shortValue");
+		assertThat(DefaultPackageModel_.intValue).isEqualTo("intValue");
+		assertThat(DefaultPackageModel_.longValue).isEqualTo("longValue");
+		assertThat(DefaultPackageModel_.floatValue).isEqualTo("floatValue");
+		assertThat(DefaultPackageModel_.doubleValue).isEqualTo("doubleValue");
+		assertThat(DefaultPackageModel_.dateValue).isEqualTo("dateValue");
+		assertThat(DefaultPackageModel_.dateTimeValue).isEqualTo(
 				"dateTimeValue");
-		Assertions.assertThat(DefaultPackageModel_.stringValue).isEqualTo(
-				"stringValue");
-		Assertions.assertThat(DefaultPackageModel_.bigDecimalValue).isEqualTo(
+		assertThat(DefaultPackageModel_.stringValue).isEqualTo("stringValue");
+		assertThat(DefaultPackageModel_.bigDecimalValue).isEqualTo(
 				"bigDecimalValue");
-		Assertions.assertThat(DefaultPackageModel_.byteWrapperValue).isEqualTo(
+		assertThat(DefaultPackageModel_.byteWrapperValue).isEqualTo(
 				"byteWrapperValue");
-		Assertions.assertThat(DefaultPackageModel_.shortWrapperValue)
-				.isEqualTo("shortWrapperValue");
-		Assertions.assertThat(DefaultPackageModel_.intWrapperValue).isEqualTo(
+		assertThat(DefaultPackageModel_.shortWrapperValue).isEqualTo(
+				"shortWrapperValue");
+		assertThat(DefaultPackageModel_.intWrapperValue).isEqualTo(
 				"intWrapperValue");
-		Assertions.assertThat(DefaultPackageModel_.longWrapperValue).isEqualTo(
+		assertThat(DefaultPackageModel_.longWrapperValue).isEqualTo(
 				"longWrapperValue");
-		Assertions.assertThat(DefaultPackageModel_.floatWrapperValue)
-				.isEqualTo("floatWrapperValue");
-		Assertions.assertThat(DefaultPackageModel_.doubleWrapperValue)
-				.isEqualTo("doubleWrapperValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue._path).isEqualTo(
+		assertThat(DefaultPackageModel_.floatWrapperValue).isEqualTo(
+				"floatWrapperValue");
+		assertThat(DefaultPackageModel_.doubleWrapperValue).isEqualTo(
+				"doubleWrapperValue");
+		assertThat(DefaultPackageModel_.modelValue._path).isEqualTo(
 				"modelValue");
 	}
 
 	@Test
 	public void sholudHaveArrayFields() {
-		Assertions.assertThat(DefaultPackageModel_.byteArray._path).isEqualTo(
-				"byteArray");
-		Assertions.assertThat(DefaultPackageModel_.shortArray._path).isEqualTo(
+		assertThat(DefaultPackageModel_.byteArray._path).isEqualTo("byteArray");
+		assertThat(DefaultPackageModel_.shortArray._path).isEqualTo(
 				"shortArray");
-		Assertions.assertThat(DefaultPackageModel_.intArray._path).isEqualTo(
-				"intArray");
-		Assertions.assertThat(DefaultPackageModel_.longArray._path).isEqualTo(
-				"longArray");
-		Assertions.assertThat(DefaultPackageModel_.floatArray._path).isEqualTo(
+		assertThat(DefaultPackageModel_.intArray._path).isEqualTo("intArray");
+		assertThat(DefaultPackageModel_.longArray._path).isEqualTo("longArray");
+		assertThat(DefaultPackageModel_.floatArray._path).isEqualTo(
 				"floatArray");
-		Assertions.assertThat(DefaultPackageModel_.doubleArray._path)
-				.isEqualTo("doubleArray");
-		Assertions.assertThat(DefaultPackageModel_.dateArray._path).isEqualTo(
-				"dateArray");
-		Assertions.assertThat(DefaultPackageModel_.dateTimeArray._path)
-				.isEqualTo("dateTimeArray");
-		Assertions.assertThat(DefaultPackageModel_.stringArray._path)
-				.isEqualTo("stringArray");
-		Assertions.assertThat(DefaultPackageModel_.bigDecimalArray._path)
-				.isEqualTo("bigDecimalArray");
-		Assertions.assertThat(DefaultPackageModel_.byteWrapperArray._path)
-				.isEqualTo("byteWrapperArray");
-		Assertions.assertThat(DefaultPackageModel_.shortWrapperArray._path)
-				.isEqualTo("shortWrapperArray");
-		Assertions.assertThat(DefaultPackageModel_.intWrapperArray._path)
-				.isEqualTo("intWrapperArray");
-		Assertions.assertThat(DefaultPackageModel_.longWrapperArray._path)
-				.isEqualTo("longWrapperArray");
-		Assertions.assertThat(DefaultPackageModel_.floatWrapperArray._path)
-				.isEqualTo("floatWrapperArray");
-		Assertions.assertThat(DefaultPackageModel_.doubleWrapperArray._path)
-				.isEqualTo("doubleWrapperArray");
-		Assertions.assertThat(DefaultPackageModel_.modelArray._path).isEqualTo(
+		assertThat(DefaultPackageModel_.doubleArray._path).isEqualTo(
+				"doubleArray");
+		assertThat(DefaultPackageModel_.dateArray._path).isEqualTo("dateArray");
+		assertThat(DefaultPackageModel_.dateTimeArray._path).isEqualTo(
+				"dateTimeArray");
+		assertThat(DefaultPackageModel_.stringArray._path).isEqualTo(
+				"stringArray");
+		assertThat(DefaultPackageModel_.bigDecimalArray._path).isEqualTo(
+				"bigDecimalArray");
+		assertThat(DefaultPackageModel_.byteWrapperArray._path).isEqualTo(
+				"byteWrapperArray");
+		assertThat(DefaultPackageModel_.shortWrapperArray._path).isEqualTo(
+				"shortWrapperArray");
+		assertThat(DefaultPackageModel_.intWrapperArray._path).isEqualTo(
+				"intWrapperArray");
+		assertThat(DefaultPackageModel_.longWrapperArray._path).isEqualTo(
+				"longWrapperArray");
+		assertThat(DefaultPackageModel_.floatWrapperArray._path).isEqualTo(
+				"floatWrapperArray");
+		assertThat(DefaultPackageModel_.doubleWrapperArray._path).isEqualTo(
+				"doubleWrapperArray");
+		assertThat(DefaultPackageModel_.modelArray._path).isEqualTo(
 				"modelArray");
 	}
 
 	@Test
 	public void sholudHaveIndexableArrayFields() {
-		Assertions.assertThat(DefaultPackageModel_.byteArray.index(5))
-				.isEqualTo("byteArray.5");
-		Assertions.assertThat(DefaultPackageModel_.shortArray.index(5))
-				.isEqualTo("shortArray.5");
-		Assertions.assertThat(DefaultPackageModel_.intArray.index(5))
-				.isEqualTo("intArray.5");
-		Assertions.assertThat(DefaultPackageModel_.longArray.index(5))
-				.isEqualTo("longArray.5");
-		Assertions.assertThat(DefaultPackageModel_.floatArray.index(5))
-				.isEqualTo("floatArray.5");
-		Assertions.assertThat(DefaultPackageModel_.doubleArray.index(5))
-				.isEqualTo("doubleArray.5");
-		Assertions.assertThat(DefaultPackageModel_.dateArray.index(5))
-				.isEqualTo("dateArray.5");
-		Assertions.assertThat(DefaultPackageModel_.dateTimeArray.index(5))
-				.isEqualTo("dateTimeArray.5");
-		Assertions.assertThat(DefaultPackageModel_.stringArray.index(5))
-				.isEqualTo("stringArray.5");
-		Assertions.assertThat(DefaultPackageModel_.bigDecimalArray.index(5))
-				.isEqualTo("bigDecimalArray.5");
-		Assertions.assertThat(DefaultPackageModel_.byteWrapperArray.index(5))
-				.isEqualTo("byteWrapperArray.5");
-		Assertions.assertThat(DefaultPackageModel_.shortWrapperArray.index(5))
-				.isEqualTo("shortWrapperArray.5");
-		Assertions.assertThat(DefaultPackageModel_.intWrapperArray.index(5))
-				.isEqualTo("intWrapperArray.5");
-		Assertions.assertThat(DefaultPackageModel_.longWrapperArray.index(5))
-				.isEqualTo("longWrapperArray.5");
-		Assertions.assertThat(DefaultPackageModel_.floatWrapperArray.index(5))
-				.isEqualTo("floatWrapperArray.5");
-		Assertions.assertThat(DefaultPackageModel_.doubleWrapperArray.index(5))
-				.isEqualTo("doubleWrapperArray.5");
-		Assertions.assertThat(DefaultPackageModel_.modelArray.index(5)._path)
-				.isEqualTo("modelArray.5");
+		assertThat(DefaultPackageModel_.byteArray.index(5)).isEqualTo(
+				"byteArray.5");
+		assertThat(DefaultPackageModel_.shortArray.index(5)).isEqualTo(
+				"shortArray.5");
+		assertThat(DefaultPackageModel_.intArray.index(5)).isEqualTo(
+				"intArray.5");
+		assertThat(DefaultPackageModel_.longArray.index(5)).isEqualTo(
+				"longArray.5");
+		assertThat(DefaultPackageModel_.floatArray.index(5)).isEqualTo(
+				"floatArray.5");
+		assertThat(DefaultPackageModel_.doubleArray.index(5)).isEqualTo(
+				"doubleArray.5");
+		assertThat(DefaultPackageModel_.dateArray.index(5)).isEqualTo(
+				"dateArray.5");
+		assertThat(DefaultPackageModel_.dateTimeArray.index(5)).isEqualTo(
+				"dateTimeArray.5");
+		assertThat(DefaultPackageModel_.stringArray.index(5)).isEqualTo(
+				"stringArray.5");
+		assertThat(DefaultPackageModel_.bigDecimalArray.index(5)).isEqualTo(
+				"bigDecimalArray.5");
+		assertThat(DefaultPackageModel_.byteWrapperArray.index(5)).isEqualTo(
+				"byteWrapperArray.5");
+		assertThat(DefaultPackageModel_.shortWrapperArray.index(5)).isEqualTo(
+				"shortWrapperArray.5");
+		assertThat(DefaultPackageModel_.intWrapperArray.index(5)).isEqualTo(
+				"intWrapperArray.5");
+		assertThat(DefaultPackageModel_.longWrapperArray.index(5)).isEqualTo(
+				"longWrapperArray.5");
+		assertThat(DefaultPackageModel_.floatWrapperArray.index(5)).isEqualTo(
+				"floatWrapperArray.5");
+		assertThat(DefaultPackageModel_.doubleWrapperArray.index(5)).isEqualTo(
+				"doubleWrapperArray.5");
+		assertThat(DefaultPackageModel_.modelArray.index(5)._path).isEqualTo(
+				"modelArray.5");
 	}
 
 	@Test
 	public void sholudHaveIndexableListFields() {
-		Assertions.assertThat(DefaultPackageModel_.byteList.index(5))
-				.isEqualTo("byteList.5");
-		Assertions.assertThat(DefaultPackageModel_.shortList.index(5))
-				.isEqualTo("shortList.5");
-		Assertions.assertThat(DefaultPackageModel_.intList.index(5)).isEqualTo(
-				"intList.5");
-		Assertions.assertThat(DefaultPackageModel_.longList.index(5))
-				.isEqualTo("longList.5");
-		Assertions.assertThat(DefaultPackageModel_.floatList.index(5))
-				.isEqualTo("floatList.5");
-		Assertions.assertThat(DefaultPackageModel_.doubleList.index(5))
-				.isEqualTo("doubleList.5");
-		Assertions.assertThat(DefaultPackageModel_.dateList.index(5))
-				.isEqualTo("dateList.5");
-		Assertions.assertThat(DefaultPackageModel_.dateTimeList.index(5))
-				.isEqualTo("dateTimeList.5");
-		Assertions.assertThat(DefaultPackageModel_.stringList.index(5))
-				.isEqualTo("stringList.5");
-		Assertions.assertThat(DefaultPackageModel_.bigDecimalList.index(5))
-				.isEqualTo("bigDecimalList.5");
-		Assertions.assertThat(DefaultPackageModel_.modelList.index(5)._path)
-				.isEqualTo("modelList.5");
+		assertThat(DefaultPackageModel_.byteList.index(5)).isEqualTo(
+				"byteList.5");
+		assertThat(DefaultPackageModel_.shortList.index(5)).isEqualTo(
+				"shortList.5");
+		assertThat(DefaultPackageModel_.intList.index(5))
+				.isEqualTo("intList.5");
+		assertThat(DefaultPackageModel_.longList.index(5)).isEqualTo(
+				"longList.5");
+		assertThat(DefaultPackageModel_.floatList.index(5)).isEqualTo(
+				"floatList.5");
+		assertThat(DefaultPackageModel_.doubleList.index(5)).isEqualTo(
+				"doubleList.5");
+		assertThat(DefaultPackageModel_.dateList.index(5)).isEqualTo(
+				"dateList.5");
+		assertThat(DefaultPackageModel_.dateTimeList.index(5)).isEqualTo(
+				"dateTimeList.5");
+		assertThat(DefaultPackageModel_.stringList.index(5)).isEqualTo(
+				"stringList.5");
+		assertThat(DefaultPackageModel_.bigDecimalList.index(5)).isEqualTo(
+				"bigDecimalList.5");
+		assertThat(DefaultPackageModel_.modelList.index(5)._path).isEqualTo(
+				"modelList.5");
 	}
 
 	@Test
 	public void sholudHaveListFields() {
-		Assertions.assertThat(DefaultPackageModel_.byteList._path).isEqualTo(
-				"byteList");
-		Assertions.assertThat(DefaultPackageModel_.shortList._path).isEqualTo(
-				"shortList");
-		Assertions.assertThat(DefaultPackageModel_.intList._path).isEqualTo(
-				"intList");
-		Assertions.assertThat(DefaultPackageModel_.longList._path).isEqualTo(
-				"longList");
-		Assertions.assertThat(DefaultPackageModel_.floatList._path).isEqualTo(
-				"floatList");
-		Assertions.assertThat(DefaultPackageModel_.doubleList._path).isEqualTo(
+		assertThat(DefaultPackageModel_.byteList._path).isEqualTo("byteList");
+		assertThat(DefaultPackageModel_.shortList._path).isEqualTo("shortList");
+		assertThat(DefaultPackageModel_.intList._path).isEqualTo("intList");
+		assertThat(DefaultPackageModel_.longList._path).isEqualTo("longList");
+		assertThat(DefaultPackageModel_.floatList._path).isEqualTo("floatList");
+		assertThat(DefaultPackageModel_.doubleList._path).isEqualTo(
 				"doubleList");
-		Assertions.assertThat(DefaultPackageModel_.dateList._path).isEqualTo(
-				"dateList");
-		Assertions.assertThat(DefaultPackageModel_.dateTimeList._path)
-				.isEqualTo("dateTimeList");
-		Assertions.assertThat(DefaultPackageModel_.stringList._path).isEqualTo(
+		assertThat(DefaultPackageModel_.dateList._path).isEqualTo("dateList");
+		assertThat(DefaultPackageModel_.dateTimeList._path).isEqualTo(
+				"dateTimeList");
+		assertThat(DefaultPackageModel_.stringList._path).isEqualTo(
 				"stringList");
-		Assertions.assertThat(DefaultPackageModel_.bigDecimalList._path)
-				.isEqualTo("bigDecimalList");
-		Assertions.assertThat(DefaultPackageModel_.modelList._path).isEqualTo(
-				"modelList");
+		assertThat(DefaultPackageModel_.bigDecimalList._path).isEqualTo(
+				"bigDecimalList");
+		assertThat(DefaultPackageModel_.modelList._path).isEqualTo("modelList");
 	}
 
 	@Test
 	public void sholudHaveAccessToNestedModelFields() {
-		Assertions.assertThat(DefaultPackageModel_.modelValue.byteValue)
-				.isEqualTo("modelValue.byteValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.shortValue)
-				.isEqualTo("modelValue.shortValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.intValue)
-				.isEqualTo("modelValue.intValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.longValue)
-				.isEqualTo("modelValue.longValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.floatValue)
-				.isEqualTo("modelValue.floatValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.doubleValue)
-				.isEqualTo("modelValue.doubleValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.dateValue)
-				.isEqualTo("modelValue.dateValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.dateTimeValue)
-				.isEqualTo("modelValue.dateTimeValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.stringValue)
-				.isEqualTo("modelValue.stringValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.bigDecimalValue)
-				.isEqualTo("modelValue.bigDecimalValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.byteWrapperValue)
-				.isEqualTo("modelValue.byteWrapperValue");
+		assertThat(DefaultPackageModel_.modelValue.byteValue).isEqualTo(
+				"modelValue.byteValue");
+		assertThat(DefaultPackageModel_.modelValue.shortValue).isEqualTo(
+				"modelValue.shortValue");
+		assertThat(DefaultPackageModel_.modelValue.intValue).isEqualTo(
+				"modelValue.intValue");
+		assertThat(DefaultPackageModel_.modelValue.longValue).isEqualTo(
+				"modelValue.longValue");
+		assertThat(DefaultPackageModel_.modelValue.floatValue).isEqualTo(
+				"modelValue.floatValue");
+		assertThat(DefaultPackageModel_.modelValue.doubleValue).isEqualTo(
+				"modelValue.doubleValue");
+		assertThat(DefaultPackageModel_.modelValue.dateValue).isEqualTo(
+				"modelValue.dateValue");
+		assertThat(DefaultPackageModel_.modelValue.dateTimeValue).isEqualTo(
+				"modelValue.dateTimeValue");
+		assertThat(DefaultPackageModel_.modelValue.stringValue).isEqualTo(
+				"modelValue.stringValue");
+		assertThat(DefaultPackageModel_.modelValue.bigDecimalValue).isEqualTo(
+				"modelValue.bigDecimalValue");
+		assertThat(DefaultPackageModel_.modelValue.byteWrapperValue).isEqualTo(
+				"modelValue.byteWrapperValue");
 		Assertions
 				.assertThat(DefaultPackageModel_.modelValue.shortWrapperValue)
 				.isEqualTo("modelValue.shortWrapperValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.intWrapperValue)
-				.isEqualTo("modelValue.intWrapperValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.longWrapperValue)
-				.isEqualTo("modelValue.longWrapperValue");
+		assertThat(DefaultPackageModel_.modelValue.intWrapperValue).isEqualTo(
+				"modelValue.intWrapperValue");
+		assertThat(DefaultPackageModel_.modelValue.longWrapperValue).isEqualTo(
+				"modelValue.longWrapperValue");
 		Assertions
 				.assertThat(DefaultPackageModel_.modelValue.floatWrapperValue)
 				.isEqualTo("modelValue.floatWrapperValue");
-		Assertions.assertThat(
-				DefaultPackageModel_.modelValue.doubleWrapperValue).isEqualTo(
-				"modelValue.doubleWrapperValue");
-		Assertions.assertThat(DefaultPackageModel_.modelValue.modelValue._path)
-				.isEqualTo("modelValue.modelValue");
+		assertThat(DefaultPackageModel_.modelValue.doubleWrapperValue)
+				.isEqualTo("modelValue.doubleWrapperValue");
+		assertThat(DefaultPackageModel_.modelValue.modelValue._path).isEqualTo(
+				"modelValue.modelValue");
 	}
 }

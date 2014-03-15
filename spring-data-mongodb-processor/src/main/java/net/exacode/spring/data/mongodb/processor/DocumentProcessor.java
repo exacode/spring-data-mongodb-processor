@@ -61,6 +61,9 @@ public class DocumentProcessor extends AbstractProcessor {
 	public Set<String> getSupportedAnnotationTypes() {
 		Set<String> supportedTypes = new HashSet<String>();
 		supportedTypes.add(Document.class.getCanonicalName());
+		supportedTypes
+				.add(net.exacode.spring.data.mongodb.processor.shared.MetaModel.class
+						.getCanonicalName());
 		return supportedTypes;
 	}
 

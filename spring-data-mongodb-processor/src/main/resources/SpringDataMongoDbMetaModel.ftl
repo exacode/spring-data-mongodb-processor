@@ -33,25 +33,33 @@ public class ${metaModel.type.className} {
 	
 	<#list metaModel.referenceFields as field>
 	<#assign fieldTypeName=fieldType(field.type)/>
-	public static final ${fieldTypeName} ${field.fieldName} = new ${fieldTypeName}("${field.fieldPathName}");
+	public static final ${fieldTypeName} ${field.fieldName} = new ${fieldTypeName}("${metaModel.prefix}${field.fieldPathName}");
 	</#list>
 	<#list metaModel.referenceArrayFields as field>
 	<#assign arrayTypeName=arrayType(field.type)/>
-	public static final ${arrayTypeName} ${field.fieldName} = new ${arrayTypeName}("${field.fieldPathName}");
+	public static final ${arrayTypeName} ${field.fieldName} = new ${arrayTypeName}("${metaModel.prefix}${field.fieldPathName}");
 	</#list>
 	<#list metaModel.primitiveFields as field>
-	public static final String ${field.fieldName} = "${field.fieldPathName}";
+	public static final String ${field.fieldName} = "${metaModel.prefix}${field.fieldPathName}";
 	</#list>
 	<#list metaModel.primitiveArrayFields as field>
-	public static final ArrayField ${field.fieldName} = new ArrayField("${field.fieldPathName}");
+	public static final ArrayField ${field.fieldName} = new ArrayField("${metaModel.prefix}${field.fieldPathName}");
 	</#list>
+	
+	/**
+	 * Creates a prefixed meta model of {@link ${metaModel.qualifiedDocumentClassName}}.
+	 * 
+	 * @see ${metaModel.type.canonicalName}
+	 */
+	public static ${metaModel.type.className}Field _prefixed(String prefix) {
+		return new ${metaModel.type.className}Field(prefix);
+	}
 
 	/**
 	 * Meta model of {@link ${metaModel.qualifiedDocumentClassName}}.
 	 * Represents an instance of subdocument.
 	 * 
 	 * @see ${metaModel.type.canonicalName}
-	 * @author ${author}
 	 */
 	public static class ${metaModel.type.className}Field {
 	
@@ -104,6 +112,15 @@ public class ${metaModel.type.className} {
 			</#list>
 		} 
 		
+		/**
+		 * Creates a prefixed meta model of {@link ${metaModel.qualifiedDocumentClassName}}.
+		 * 
+		 * @see ${metaModel.type.canonicalName}
+		 */
+		public ${metaModel.type.className}Field _prefixed(String prefix) {
+			return new ${metaModel.type.className}Field(_path + "." + prefix);
+		}
+		
 		@Override
 		public String toString() {
 			return _path;
@@ -116,7 +133,6 @@ public class ${metaModel.type.className} {
 	 * Represents an instance of mongodb array of subdocuments.
 	 * 
 	 * @see ${metaModel.type.canonicalName}
-	 * @author ${author}
 	 */
 	public static class ${metaModel.type.className}Array extends ${metaModel.type.className}Field {
  
@@ -130,6 +146,15 @@ public class ${metaModel.type.className} {
 
 		public ${metaModel.type.className}Array index(int idx) {
 			return new ${metaModel.type.className}Array(_path + "." + idx);
+		}
+		
+		/**
+		 * Creates a prefixed meta model of {@link ${metaModel.qualifiedDocumentClassName}}.
+		 * 
+		 * @see ${metaModel.type.canonicalName}
+		 */
+		public ${metaModel.type.className}Field _prefixed(String prefix) {
+			return new ${metaModel.type.className}Array(_path + "." + prefix);
 		}
 		
 		@Override

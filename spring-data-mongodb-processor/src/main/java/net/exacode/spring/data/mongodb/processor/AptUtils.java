@@ -189,6 +189,9 @@ public class AptUtils {
 	}
 
 	public TypeMirror getUpperBound(TypeMirror type) {
+		if (type == null) {
+			return null;
+		}
 		TypeMirror upperBound = type;
 		if (TypeKind.TYPEVAR.equals(type.getKind())) {
 			TypeVariable typeVariable = (TypeVariable) type;
